@@ -1,0 +1,7 @@
+We made the test rooms off of the fileinittests306. 
+
+We tried to add unique things to test in the testspecial method, However it seems to the programmers
+that the prewritten tests classes sufficiently tested every variable that could be tested. 
+
+Sorry if that is not creative or testing enough, but every value was updated so that we can accurately
+test our specific file

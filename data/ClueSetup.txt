@@ -1,0 +1,42 @@
+// Rooms and room identifiers
+Room, Cuba, C
+Room, Fiji, F
+Room, Jamaica, J
+Room, Bahamas, B
+Room, Grenada, G
+Room, Sicily, S
+Room, Madagascare, M
+Room, Aruba, A
+Room, Iceland, I
+// Other spaces
+Space, Unused, X
+Space, Water, W
+// Players
+Player, NPC, Sam, S
+Player, NPC, Casey, C
+Player, NPC, Riley, R
+Player, NPC, Mia, M
+Player, NPC, Kim, K
+Player, PC, Nick, N
+// Cards
+Card, Player, Sam, S
+Card, Player, Casey, C
+Card, Player, Riley, R
+Card, Player, Mia, M
+Card, Player, Kim, K
+Card, Player, Nick, N
+Card, Room, Cuba, C
+Card, Room, Fiji, F
+Card, Room, Jamaica, J
+Card, Room, Bahamas, B
+Card, Room, Grenada, G
+Card, Room, Sicily, S
+Card, Room, Madagascare, M
+Card, Room, Aruba, A
+Card, Room, Iceland, I
+Card, Weapon, Knife, k
+Card, Weapon, Gun, G
+Card, Weapon, Poison, P
+Card, Weapon, Shark, S
+Card, Weapon, Rope, R
+Card, Weapon, Candelstick, C
