@@ -4,6 +4,7 @@ import java.util.*;
 
 import ClueGame.Board.Entities.Cell.BoardCell;
 import ClueGame.Playables.Entities.Card.Card;
+import ClueGame.Playables.Entities.Card.CardType;
 import ClueGame.Playables.Entities.Card.Collection.Hand;
 import ClueGame.Playables.Entities.Player.Guess.Accusation;
 import ClueGame.Playables.Entities.Player.Guess.Suggestion;
@@ -16,10 +17,12 @@ import SeedWork.IEntity;
 public abstract class Player implements IEntity {
 	
 	private String _playerName;
+	
 	protected Hand _hand;
 	protected LocationDTO _currentLocation;
 	protected ArrayList<Card> _deckReference;
 	protected Set<BoardCell> _targets;
+	protected ArrayList<Card> _seenCards;
 	
 	private Suggestion _recentSuggestion;
 	private Card _recentSuggestionResponse;
@@ -27,6 +30,8 @@ public abstract class Player implements IEntity {
 	
 	public Player(String playerName, String playerID) {
 		_playerName = playerName;
+		
+		_seenCards = new ArrayList<Card>();
 	}
 	
 	public String getName() {
@@ -34,11 +39,24 @@ public abstract class Player implements IEntity {
 	}
 
 	public void updateHand(Hand hand) {
+		
+		_seenCards.add(hand.getCardAtIndex(0));
+		_seenCards.add(hand.getCardAtIndex(1));
+		_seenCards.add(hand.getCardAtIndex(2));
+
 		_hand = hand;
 	}
 	
 	public Hand getHand() {
 		return _hand;
+	}
+	
+	public void setSeenCards(ArrayList<Card> cards) {
+		_seenCards = cards;
+	}
+	
+	public ArrayList<Card> getSeenCards() {
+		return _seenCards;
 	}
 	
 	public void updateLocation(LocationDTO location) {

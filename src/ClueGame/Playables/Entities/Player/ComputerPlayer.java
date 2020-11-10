@@ -7,7 +7,6 @@ import ClueGame.Board.Entities.Cell.BoardCell;
 import ClueGame.Board.Entities.Room.Room;
 import ClueGame.Playables.Entities.Card.Card;
 import ClueGame.Playables.Entities.Card.CardType;
-import ClueGame.Playables.Entities.Card.Collection.Hand;
 import ClueGame.Playables.Entities.Player.Guess.Suggestion;
 import ClueGame.Playables.Events.PlayerMovedToSelectedTargetEvent;
 import ClueGame.Playables.Events.PlayerSelectingTargetsEvent;
@@ -15,36 +14,17 @@ import Exceptions.PlayerSuggestionNotInRoomException;
 import SeedWork.EventBus;
 
 public class ComputerPlayer extends Player {
-	
-	private ArrayList<Card> _seenCards;
-	
+		
 	private LocationDTO _targetLocation;
 
 	public ComputerPlayer(String playerName, String playerID) {
-		super(playerName, playerID);
-
-		_seenCards = new ArrayList<Card>();
-		
-	}
-	
-	@Override
-	public void updateHand(Hand hand) {
-		
-		_seenCards.add(hand.getCardAtIndex(0));
-		_seenCards.add(hand.getCardAtIndex(1));
-		_seenCards.add(hand.getCardAtIndex(2));
-
-		_hand = hand;
+		super(playerName, playerID);		
 	}
 	
 	@Override
 	public void receiveSuggestionResponse(Card response) {
 		if (response != null) _seenCards.add(response);
 		super.receiveSuggestionResponse(response);
-	}
-
-	public void setSeenCards(ArrayList<Card> cards) {
-		_seenCards = cards;
 	}
 
 	public void selectTargetFromRollOf(int step) {

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ClueGame.Playables.Entities.Card.Card;
+import ClueGame.Playables.Entities.Card.CardType;
 import ClueGame.Playables.Entities.Player.ComputerPlayer;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.LocationDTO;
@@ -53,6 +55,18 @@ public class PlayerService implements ISingleton<PlayerService> {
 	
 	public Player getPlayerByName(String name) {
 		return _playerStorage.getOne(name);
+	}
+	
+	public ArrayList<Card> getSeenCardsByType(Player player, CardType type) {
+		
+		ArrayList<Card> seenCardsOfType = new ArrayList<Card>();
+
+		for (Card card : player.getSeenCards()) {
+			if (card.getType() == type && !player.getHand().getCards().contains(card)) {
+				seenCardsOfType.add(card);
+			}
+		}
+		return seenCardsOfType;
 	}
 
 	/////////////////////////////////////////////////////////////////////////
