@@ -1,6 +1,6 @@
 #ClueGame
 
-## Names: Evan Vaughan, Jack Ballard
+## Name: Evan Vaughan
 ## Section: C
 
 ## Design Decisions
