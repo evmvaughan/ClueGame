@@ -12,6 +12,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class GUI_Example extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+	
 	private JTextField name;
 
 	public GUI_Example()

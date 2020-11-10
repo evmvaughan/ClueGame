@@ -2,6 +2,8 @@ package Exceptions;
 
 public class CouldNotCreateEntityException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
 	public CouldNotCreateEntityException() {
 		 
 	}

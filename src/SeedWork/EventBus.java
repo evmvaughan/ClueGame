@@ -1,10 +1,10 @@
 package SeedWork;
 
-import clueGame.GameEngine.EventHandlers.*;
-import clueGame.Playables.Events.AccusationAssertedEvent;
-import clueGame.Playables.Events.PlayablesInitializedEvent;
-import clueGame.Playables.Events.PlayerMovedToSelectedTargetEvent;
-import clueGame.Playables.Events.PlayerSelectingTargetsEvent;
+import ClueGame.GameEngine.EventHandlers.*;
+import ClueGame.Playables.Events.AccusationAssertedEvent;
+import ClueGame.Playables.Events.PlayablesInitializedEvent;
+import ClueGame.Playables.Events.PlayerMovedToSelectedTargetEvent;
+import ClueGame.Playables.Events.PlayerSelectingTargetsEvent;
 
 
 

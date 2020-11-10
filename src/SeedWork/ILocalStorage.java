@@ -3,8 +3,6 @@ package SeedWork;
 import java.util.ArrayList;
 
 import Exceptions.CouldNotCreateEntityException;
-import Exceptions.EntityNotFoundException;
-import clueGame.Board.Entities.Cell.BoardCell;
 
 public interface ILocalStorage<T> {
 		

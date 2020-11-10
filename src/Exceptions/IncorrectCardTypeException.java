@@ -2,6 +2,8 @@ package Exceptions;
 
 public class IncorrectCardTypeException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
 	public IncorrectCardTypeException() {
 		 
 	}
