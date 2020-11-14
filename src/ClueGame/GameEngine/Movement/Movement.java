@@ -137,4 +137,8 @@ public class Movement {
 		return true;
 	}
 
+	public ArrayList<PlayerMovementContext> getPlayerMovementContexts() {
+		return _playerMovementContexts;
+	}
+
 }

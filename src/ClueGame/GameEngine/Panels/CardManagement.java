@@ -1,15 +1,15 @@
-package ClueGame.GameEngine.CardManagementPanel;
+package ClueGame.GameEngine.Panels;
 
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -19,7 +19,7 @@ import ClueGame.Playables.Entities.Card.CardType;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
 
-public class CardManagementPanel extends JPanel {
+public class CardManagement extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class CardManagementPanel extends JPanel {
 	private ArrayList<JTextField> _handRooms;
 	private ArrayList<JTextField> _handWeapons;
 	
-	public CardManagementPanel() {
+	public CardManagement() {
 		
 		_seenPeople = new ArrayList<JTextField>();
 		_seenRooms = new ArrayList<JTextField>();
@@ -56,53 +56,52 @@ public class CardManagementPanel extends JPanel {
 					
 			setLayout(new GridLayout(3, 1));
 			setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
-			JPanel internalPanel = people();
-			add(internalPanel);
-			internalPanel = rooms();
-			add(internalPanel);
-			internalPanel = weapons();
-			add(internalPanel);
+			add(new Section("People").getPanel());
+			add(new Section("Rooms").getPanel());
+			add(new Section("Weapons").getPanel());
 		}
-
-	private JPanel people() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 1));
-		panel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
-		panel.add(inHand());
-		panel.add(inHandCards(CardType.PERSON));
-		panel.add(seen());
-		panel.add(seenCards(CardType.PERSON));
-		return panel;
-	}
-
-	private JPanel rooms() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 1));
-		panel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
-		panel.add(inHand());
-		panel.add(inHandCards(CardType.ROOM));
-		panel.add(seen());
-		panel.add(seenCards(CardType.ROOM));
-		return panel;
-	}
-
-	private JPanel weapons() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 1));
-		panel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-		panel.add(inHand());
-		panel.add(inHandCards(CardType.WEAPON));
-		panel.add(seen());
-		panel.add(seenCards(CardType.WEAPON));
-		return panel;
-	}
 	
-	private JPanel inHand() {
+	public class Section extends JPanel {
+		
+		private static final long serialVersionUID = 1L;
+		
+		private String _section;
+		private CardType _type;
+		
+		public Section(String section) {
+			
+			_section = section;
+			
+			switch(_section) {
+			case "People":
+				_type = CardType.PERSON;
+				break;
+			case "Rooms":
+				_type = CardType.ROOM;
+				break;
+			default:
+				_type = CardType.WEAPON;
+				break;
+			}
+			
+		}
+		
+		public JPanel getPanel(){
+			JPanel panel = new JPanel();
+			panel.setLayout(new GridLayout(4, 1));
+			panel.setBorder(new TitledBorder(new EtchedBorder(), _section));
+			panel.add(inHand(_type));
+			panel.add(inHandCards(_type));
+			panel.add(seen(_type));
+			panel.add(seenCards(_type));
+			return panel;
+		}
+	}
+
+	private JPanel inHand(CardType type) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(1, 1));
 		JLabel label = new JLabel("In Hand:", JLabel.LEFT);
 		panel.add(label);
-		
 		return panel;
 		
 	}
@@ -110,11 +109,18 @@ public class CardManagementPanel extends JPanel {
 	private JPanel inHandCards(CardType type) {
 		JPanel panel = new JPanel();
 		
-		JTextField none = new JTextField("None");
+		JTextField none = new JTextField("None", 20);
+		JTextField none1 = new JTextField("Non1e", 20);
+
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 		none.setBackground(Color.WHITE);
 		none.setEditable(false);
-		panel.add(none);
-		
+        panel.add(none, gbc);
+//        panel.add(none1, gbc);
+
 		switch(type) {
 		case PERSON:
 			
@@ -159,23 +165,26 @@ public class CardManagementPanel extends JPanel {
 	}
 	
 	
-	private JPanel seen() {
+	private JPanel seen(CardType type) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(1, 1));
 
 		JLabel label = new JLabel("Seen:");
 		panel.add(label);
-		
 		return panel;
 	}
 	
 	private JPanel seenCards(CardType type) {
 		JPanel panel = new JPanel();
 		
-		JTextField none = new JTextField("None");
+		JTextField none = new JTextField("None", 20);
+		
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 		none.setBackground(Color.WHITE);
 		none.setEditable(false);
-		panel.add(none);
+        panel.add(none, gbc);
 		
 		switch(type) {
 		case PERSON:
@@ -225,7 +234,7 @@ public class CardManagementPanel extends JPanel {
 		seenCards.addAll(PlayablesServiceCollection.CardService.getCards());
 		player.setSeenCards(seenCards);
 		
-		CardManagementPanel panel = new CardManagementPanel(); // create the panel
+		CardManagement panel = new CardManagement(); // create the panel
 		JFrame frame = new JFrame(); // create the frame
 		frame.setContentPane(panel); // put the panel in the frame
 		frame.setSize(230, 700); // size the frame
@@ -245,21 +254,21 @@ public class CardManagementPanel extends JPanel {
 			switch(type) {
 			case PERSON:
 				
-				field = new JTextField(20);
+				field = new JTextField(10);
 				field.setText(card.getName());
 				_handPeople.add(field);
 				
 				break;
 			case ROOM:
 				
-				field = new JTextField(20);
+				field = new JTextField(10);
 				field.setText(card.getName());
 				_handRooms.add(field);
 
 				break;
 			case WEAPON:
 				
-				field = new JTextField(20);
+				field = new JTextField(10);
 				field.setText(card.getName());
 				_handWeapons.add(field);
 				
@@ -272,7 +281,7 @@ public class CardManagementPanel extends JPanel {
 	
 	private void setPlayerSeenWeapons(ArrayList<Card> seenWeapons) {
 		for (Card card : seenWeapons) {
-			JTextField field = new JTextField(20);
+			JTextField field = new JTextField(10);
 			field.setText(card.getName());
 			_seenWeapons.add(field);			
 		}
@@ -281,7 +290,7 @@ public class CardManagementPanel extends JPanel {
 
 	private void setPlayerSeenRooms(ArrayList<Card> seenRooms) {
 		for (Card card : seenRooms) {
-			JTextField field = new JTextField(20);
+			JTextField field = new JTextField(10);
 			field.setText(card.getName());
 			_seenRooms.add(field);			
 		}
@@ -289,10 +298,9 @@ public class CardManagementPanel extends JPanel {
 
 	private void setPlayerSeenPeople(ArrayList<Card> seenPeople) {
 		for (Card card : seenPeople) {
-			JTextField field = new JTextField(20);
+			JTextField field = new JTextField(10);
 			field.setText(card.getName());
 			_seenPeople.add(field);			
 		}
 	}
-
 }

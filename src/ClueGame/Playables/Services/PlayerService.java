@@ -103,23 +103,32 @@ public class PlayerService implements ISingleton<PlayerService> {
 					
 					String[] playerDescription = configurationLine.split(", ");
 					
-					if (playerDescription.length > 4) throw new BadConfigFormatException("File format does not meet specifications!");
+					if (playerDescription.length > 6) throw new BadConfigFormatException("File format does not meet specifications!");
 					
 					String playerType = playerDescription[1];
 					String playerName = playerDescription[2];
 					String playerID = playerDescription[3];
+					
+					int locationX = Integer.parseInt(playerDescription[4]);
+					int locationY =  Integer.parseInt(playerDescription[5]);
 
+					Player player;
+					
 					switch(playerType) {
 					case "PC":
 						
-						_playerStorage.addOne(new HumanPlayer(playerName, playerID));
+						player = new HumanPlayer(playerName, playerID);
+						_playerStorage.addOne(player);
 						break;
 						
 					default:
-						_playerStorage.addOne(new ComputerPlayer(playerName, playerID));
+						player = new ComputerPlayer(playerName, playerID);
+						_playerStorage.addOne(player);
 						break;
 
 					}
+					
+					updatePlayerLocation(player.getName(), "", locationX, locationY);
 				}
 			}
 			

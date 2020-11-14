@@ -4,11 +4,12 @@ import java.io.FileNotFoundException;
 
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.GameEngine.Movement.Movement;
+import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
 import Exceptions.BadConfigFormatException;
 import SeedWork.ISingleton;
 
-public class GameEngine implements ISingleton<GameEngine> {
+public class GameEngine implements ISingleton<GameEngine>{
 	
 	private static GameEngine instance = new GameEngine();
 	
@@ -37,6 +38,18 @@ public class GameEngine implements ISingleton<GameEngine> {
 		PlayablesServiceCollection.Dealer.shuffleAndDealCards();
 		
 		Movement = ClueGame.GameEngine.Movement.Movement.getInstance();
+		
+		initializePlayers();
+		
+	}
+	
+	private void initializePlayers() {
+		
+		for (Player player : PlayablesServiceCollection.PlayerService.getPlayers()) {
+			
+			Movement.initializePlayerAtLocation(player, player.getLocation().getCurrentRow(), player.getLocation().getCurrentColumn());
+
+		}
 	}
 	
 	

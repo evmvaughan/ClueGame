@@ -1,5 +1,6 @@
 package ClueGame.Board.Services;
 
+import java.awt.Component;
 import java.util.ArrayList;
 
 import ClueGame.Board.Entities.Board.Board;
@@ -65,5 +66,13 @@ public class BoardService implements ISingleton<BoardService> {
 	
 	public void addCellGrid(ArrayList<ArrayList<BoardCell>> grid) {
 		_board.addCellGrid(grid);
+	}
+
+	public ArrayList<ArrayList<BoardCell>> getGrid() {
+		return _board.getCellGrid();
+	}
+
+	public ArrayList<BoardCell> getCells() {
+		return _board.getCells();
 	}
 }
