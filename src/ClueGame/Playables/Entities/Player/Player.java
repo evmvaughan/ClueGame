@@ -59,6 +59,28 @@ public abstract class Player implements IEntity {
 		return _seenCards;
 	}
 	
+	public ArrayList<Card> getSeenCardsWithoutHand() {
+		
+		ArrayList<Card> uniqueUnseen = new ArrayList<Card>();
+		
+		boolean isUnique;
+		
+		for (Card seen : _seenCards) {
+			isUnique = true;
+			
+			for (Card hand : _hand.getCards()) {
+				if (seen == hand) {
+					isUnique = false;
+				}
+			}
+			if (isUnique) {
+				uniqueUnseen.add(seen);
+			}
+		}
+		
+		return uniqueUnseen;
+	}
+	
 	public void updateLocation(LocationDTO location) {
 		_currentLocation = location;
 	}

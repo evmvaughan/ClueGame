@@ -3,10 +3,10 @@ package ClueGame.GameEngine;
 import java.io.FileNotFoundException;
 
 import ClueGame.Board.Services.BoardServiceCollection;
-import ClueGame.GameEngine.Movement.Movement;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
 import Exceptions.BadConfigFormatException;
+import ClueGame.GameEngine.Movement.*;
 import SeedWork.ISingleton;
 
 public class GameEngine implements ISingleton<GameEngine>{

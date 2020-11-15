@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import ClueGame.GameEngine.ViewModels.Player;
+import ClueGame.GameEngine.ViewModels.PlayerView;
 
 public class GameControl extends JPanel {
 
@@ -25,7 +25,7 @@ public class GameControl extends JPanel {
 	private JTextField _guess;
 
 	public GameControl() {
-
+		
 		setLayout(new GridLayout(2, 0));
 		JPanel internalPanel = turnInformation();
 		add(internalPanel);
@@ -41,7 +41,7 @@ public class GameControl extends JPanel {
 		_guessResult.setText(guessResult);
 	}
 	
-	private void setTurn(Player computerPlayerView, Integer roll) {
+	private void setTurn(PlayerView computerPlayerView, Integer roll) {
 		_playerName.setText(computerPlayerView.getName());
 		_playerColor = Color.orange;
 		_playerName.setBackground(_playerColor);
@@ -124,16 +124,11 @@ public class GameControl extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		GameControl panel = new GameControl(); // create the panel
-		JFrame frame = new JFrame(); // create the frame
-		frame.setContentPane(panel); // put the panel in the frame
-		frame.setSize(750, 180); // size the frame
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
-		frame.setVisible(true); // make it visible	
-		
-		// test filling in the data
-		panel.setTurn(new Player("Col. Mustard", "orange"), 5);
-		panel.setGuess("I have no guess!");
-		panel.setGuessResult("So you have nothing?");
+		GameControl panel = new GameControl(); 
+		JFrame frame = new JFrame(); 
+		frame.setContentPane(panel); 
+		frame.setSize(750, 180); 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		frame.setVisible(true); 
 	}
 }

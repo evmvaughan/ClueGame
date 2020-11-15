@@ -1,8 +1,6 @@
 package ClueGame.GameEngine.ViewModels;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,11 +8,12 @@ import javax.swing.JPanel;
 
 import ClueGame.Board.Entities.Cell.BasicCell;
 import ClueGame.Board.Entities.Cell.BoardCell;
+import ClueGame.Board.Entities.Cell.DoorDirection;
 import ClueGame.Board.Entities.Cell.DoorwayCell;
 import ClueGame.Board.Entities.Cell.RoomCell;
-import ClueGame.Playables.Entities.Player.Player;
+import ClueGame.Board.Services.BoardServiceCollection;
 
-public class Cell extends JPanel {
+public class CellView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,14 +21,27 @@ public class Cell extends JPanel {
 	private int _height;
 		
 	private BoardCell _boardCell;
-	private Player _player;
+	private PlayerView _playerView;
 	
-	private boolean _isDoorway;
 	private boolean _hasPlayer;
 	
-	public Cell(BoardCell cell, int adjustedWidth, int adjustedHeight) {
+	private boolean _isRoom;
+	private boolean _isDoorway;
+	
+	private DoorDirection _doorDirection;
+	private int _doorShiftX;
+	private int _doorShiftY;
+	
+	private boolean _isRoomLabel;
+	private String _roomLabel;
+	
+	private Color _color;
+	
+	public CellView(BoardCell cell, int adjustedWidth, int adjustedHeight) {
 
 		_boardCell = cell;
+		
+		_color = getColorFromType();
 		
 		_width = adjustedWidth;
 		_height = adjustedHeight;
@@ -38,9 +50,9 @@ public class Cell extends JPanel {
         this.addMouseListener(listener);
 	}
 	
-	public Cell(BoardCell cell, Player player, int width, int height) {
+	public CellView(BoardCell cell, PlayerView playerView, int width, int height) {
 		_boardCell = cell;
-		_player = player;
+		_playerView = playerView;
 		
 		_hasPlayer = true;
 		
@@ -54,23 +66,69 @@ public class Cell extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-				
-		g.setColor(getColorFromType());
+
+		g.setColor(_color);
 		
 		Rectangle.Double rectangle = new Rectangle.Double(0, 0, _width, _height);
 		((Graphics2D)g).fill(rectangle);
 		((Graphics2D)g).draw(rectangle);
 		
-//		g.setColor(Color.BLACK);
-//		g.draw3DRect(0, 0, _width, _height, true);
+		if (!_isRoom) {
+			g.setColor(Color.BLACK);
+			g.draw3DRect(0, 0, _width, _height, true);	
+		}
+		
+		if (_isDoorway) {
+			g.setColor(Color.CYAN);
+			((Graphics2D) g).rotate(Math.toRadians(getRotationFromDirection()));
+			g.fillRect(_doorShiftX, _doorShiftY, _width, _height/4);
+		}
 
 		if (_hasPlayer) {
-			g.setColor(Color.BLACK);
-	         g.fillOval(0, 0, _height, _width);
+			g.setColor(_playerView.getColor());
+	         g.fillOval(0, 0, _width, _height);
+		}
+		
+		if (_isRoomLabel) {
+			
+			Font font = new Font("font", Font.BOLD, 200);
+			g.setFont(font);
+			g.setColor(Color.DARK_GRAY);
+			g.drawString("FUCK", 0, 0);
+
 		}
 	}
 	
 	
+	private double getRotationFromDirection() {
+		
+		double rotation = 0;
+		
+		switch(_doorDirection) {
+		case DOWN:
+			rotation = 0;
+			_doorShiftX = 0;
+			_doorShiftY = 0;
+			break;
+		case UP:
+			rotation = 0;
+			_doorShiftX = 0;
+			_doorShiftY = 3*_height/4;
+			break;
+		case RIGHT:
+			rotation = 90;
+			_doorShiftX = 0;
+			_doorShiftY = -_width/4;
+			break;
+		case LEFT:
+			rotation = 90;
+			_doorShiftX = 0;
+			_doorShiftY = -_width;
+			break;
+		}
+		return rotation;
+	}
+
 	public Color getColorFromType() {
 		
 		if (_boardCell instanceof BasicCell) {
@@ -82,15 +140,30 @@ public class Cell extends JPanel {
 		}
 		
 		if (_boardCell instanceof DoorwayCell) {
+			_isRoom = true;
 			_isDoorway = true;
-			return Color.cyan;
-		}
-		
-		if (_boardCell instanceof RoomCell) {
+			_doorDirection = _boardCell.getDoorDirection();
 			return Color.ORANGE;
 		}
 		
+		if (_boardCell instanceof RoomCell) {
+			if (_boardCell.isLabel()) {
+				_isRoomLabel = true;
+				_roomLabel = BoardServiceCollection.RoomService.getRoomFromCell(_boardCell).getName();
+				
+			}
+			_isRoom = true;
+			return Color.ORANGE;
+		}
 		return Color.BLACK;
+	}
+	
+
+	public boolean isRoomLabel() {
+		return _isRoomLabel;
+	}
+	
+	public void drawRoomLabel() {
 		
 	}
 	
@@ -123,9 +196,15 @@ public class Cell extends JPanel {
 	public String toString() {
 		
 		if (_hasPlayer) {
-			return _boardCell.toString() + "Player: " + _player.getName();
+			return _boardCell.toString() + "Player: " + _playerView.getName();
 		}
 		
 		return _boardCell.toString();
+	}
+
+	public void updateSize(int width, int height) {
+		_width = width;
+		_height = height;
+		
 	}
 }
