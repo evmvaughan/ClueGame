@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ClueGame.GameEngine.GameEngine;
@@ -26,7 +27,7 @@ public class ClueGame extends JPanel {
 	
 	
 	public ClueGame(Player player) {
-			
+		
 		setLayout(new BorderLayout());
 		
 		CardManagement cardManagement = new CardManagement(player);
@@ -40,6 +41,17 @@ public class ClueGame extends JPanel {
 		add(cardManagement, BorderLayout.EAST);
 		add(board, BorderLayout.CENTER);
 		add(gameControl, BorderLayout.SOUTH);
+		
+	}
+	
+	public void showSplashScreen(JFrame frame, Player player) {
+		
+		String message = "You are " + player.getName();
+		
+		message = message + "\nCan you find the solution \nbefore the Computer Players?";
+		
+		JOptionPane.showMessageDialog(frame, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+
 	}
 	
 	public static void main(String[] args) {
@@ -57,7 +69,7 @@ public class ClueGame extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		frame.setVisible(true); 
 		
-		
+		panel.showSplashScreen(frame, player);
 		
 	}
 }

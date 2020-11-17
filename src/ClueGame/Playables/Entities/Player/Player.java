@@ -24,6 +24,8 @@ public abstract class Player implements IEntity {
 	protected Set<BoardCell> _targets;
 	protected ArrayList<Card> _seenCards;
 	
+	private boolean _turn;
+	
 	private Suggestion _recentSuggestion;
 	private Card _recentSuggestionResponse;
 	
@@ -152,5 +154,13 @@ public abstract class Player implements IEntity {
 
 	public void setTargets(Set<BoardCell> targets) {
 		_targets = targets;
+	}
+
+	public boolean hasTurn() {
+		return _turn;
+	}
+	
+	public void setTurn(boolean turn) {
+		_turn = turn;
 	}
 }

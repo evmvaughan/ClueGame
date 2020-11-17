@@ -31,4 +31,8 @@ public class PlayerView extends JPanel {
 	public Color getColor() {
 		return _color;
 	}
+
+	public Player getPlayer() {
+		return _player;
+	}
 }

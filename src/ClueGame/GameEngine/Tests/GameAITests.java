@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.Movement.Movement;
 import ClueGame.Playables.Entities.Player.ComputerPlayer;
@@ -33,7 +34,7 @@ public class GameAITests {
 		
 		Movement playerMovements = GameEngine.Movement;
 		
-		playerMovements.initializePlayerAtLocation(player, 4, 4);
+		playerMovements.updatePlayerMovementContext(player, new LocationDTO("Water", 4, 4));
 		
 		player.selectTargetFromRollOf(2);
 		
@@ -53,7 +54,8 @@ public class GameAITests {
 		
 		Movement playerMovements = GameEngine.Movement;
 		
-		playerMovements.initializePlayerAtLocation(player, 11, 6);
+		playerMovements.updatePlayerMovementContext(player, new LocationDTO("Water", 11, 6));
+//		initializePlayerAtLocation(player, 11, 6);
 		
 		player.selectTargetFromRollOf(1);
 		
@@ -76,9 +78,11 @@ public class GameAITests {
 		
 		Movement playerMovements = GameEngine.Movement;
 		
-		playerMovements.initializePlayerAtLocation(player, 12, 1);
-		
 		playerMovements.updatePlayerMovementContext(player, new LocationDTO("Aruba", 8, 2)); // Inform the game that the player has seen Aruba
+		
+		player.setTarget(BoardServiceCollection.CellService.getCell(12, 1), BoardServiceCollection.RoomService.getRoomFromName("Water"));
+		
+		player.moveToTarget();
 		
 		player.selectTargetFromRollOf(2);
 		

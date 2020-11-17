@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +36,8 @@ public class BoardView extends JPanel {
 	
 	private BoardService _boardService;
 	
+	private PanelListener _listener;
+	
 	public BoardView(int width, int height) {
 		
 		_cellViews = new ArrayList<CellView>();
@@ -43,6 +47,9 @@ public class BoardView extends JPanel {
 		
 		_width = width;
 		_height = height;
+		
+        _listener = new PanelListener();
+        this.addMouseListener(_listener);
 		
 		gatherBoardDimensions();
 		drawBoardCells();
@@ -95,23 +102,12 @@ public class BoardView extends JPanel {
 					colorIndex++;
 				}
 			}
+			
+			cellView.addMouseListener(_listener);
+			
 			_cellViews.add(cellView);
 			add(cellView);
 		}
-	}
-	
-	private void drawRoomLabels(Graphics g) {
-//		for (CellView cell : _cellViews) {
-//			if (cell.isRoomLabel()) {
-//				System.out.println(cell.getX());
-//				Font font = new Font("font", Font.BOLD, 13);
-//				g.setFont(font);
-//				g.setColor(Color.DARK_GRAY);
-//				g.drawString("fck it all", cell.getX(), cell.getY());
-//				
-////				cell.drawRoomLabel(g);
-//			}
-//		}
 	}
 	
 	private ArrayList<Color> generateColorReal() {
@@ -123,6 +119,37 @@ public class BoardView extends JPanel {
 		return colorList;
 		
 	}
+	
+	private void updatePlayerView(PlayerView player) {
+		for (PlayerView view : _playerViews) {
+			if (player.getPlayer() == view.getPlayer()) {
+				
+			}
+		}
+	}
+	
+    private class PanelListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent event) {
+            Object source = event.getSource();
+            if(source instanceof JPanel){
+            	System.out.println(event.getSource());
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent arg0) {}
+
+        @Override
+        public void mouseExited(MouseEvent arg0) {}
+
+        @Override
+        public void mousePressed(MouseEvent arg0) {
+        }
+        @Override
+        public void mouseReleased(MouseEvent arg0) {}
+    }
 	
 	public static void main(String[] args) {
 		

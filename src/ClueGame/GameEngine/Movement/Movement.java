@@ -67,8 +67,8 @@ public class Movement {
 		BoardCell cell = _cellService.getCell(newLocation.getCurrentRow(), newLocation.getCurrentColumn());
 		Room room = _roomService.getRoomFromName(newLocation.getCurrentRoom());
 		
-		selectedContext.addVisitedCell(cell);
-		selectedContext.addVisitedRoom(room);
+		selectedContext.setCurrentCell(cell);
+		selectedContext.setCurrentRoom(room);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////

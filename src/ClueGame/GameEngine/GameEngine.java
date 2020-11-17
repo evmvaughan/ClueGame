@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
+import ClueGame.Playables.Services.PlayerService;
 import Exceptions.BadConfigFormatException;
 import ClueGame.GameEngine.Movement.*;
 import SeedWork.ISingleton;
@@ -14,6 +15,8 @@ public class GameEngine implements ISingleton<GameEngine>{
 	private static GameEngine instance = new GameEngine();
 	
 	public static Movement Movement;
+	
+	private PlayerService _playerService;
 	
 	private GameEngine () {}
 	
@@ -58,6 +61,10 @@ public class GameEngine implements ISingleton<GameEngine>{
 		
 		gameEngine.initializeAll();
 	}
+
+//	public void checkPlayerTurnStatus() {
+//		_playerService.
+//	}
 		
 
 }

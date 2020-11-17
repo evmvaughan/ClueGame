@@ -19,6 +19,7 @@ import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Infrastructure.PlayerStorage;
 import Exceptions.BadConfigFormatException;
 import Exceptions.CouldNotCreateEntityException;
+import Exceptions.PlayersTurnNotFinishedException;
 import SeedWork.ISingleton;
 
 public class PlayerService implements ISingleton<PlayerService> {
@@ -26,6 +27,9 @@ public class PlayerService implements ISingleton<PlayerService> {
 	private static PlayerService instance = new PlayerService();
 	
 	private PlayerStorage _playerStorage;
+	private Map<Integer, Player> _playerReal;
+	
+	private int _currentPlayerIndex;
 	
 	private PlayerService() {
 		_playerStorage = PlayerStorage.getInstance();
@@ -72,7 +76,7 @@ public class PlayerService implements ISingleton<PlayerService> {
 	/////////////////////////////////////////////////////////////////////////
 	// Create a map of all players with an index for tracking player order //
 	/////////////////////////////////////////////////////////////////////////
-	public Map<Integer, Player> getPlayerReal() {
+	public void createPlayerReal() {
 		
 		Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
 		
@@ -83,7 +87,11 @@ public class PlayerService implements ISingleton<PlayerService> {
 			playerIndex++;
 		}
 		
-		return playerMap;
+		_playerReal = playerMap;
+	}
+	
+	public Map<Integer, Player> getPlayerReal() {
+		return _playerReal;
 	}
 	
 	/////////////////////////////////////////////////////////////////
@@ -144,5 +152,26 @@ public class PlayerService implements ISingleton<PlayerService> {
 		} catch (CouldNotCreateEntityException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		createPlayerReal();
+	}
+	
+	private int getNextPlayerIndex() {
+		
+		if (_currentPlayerIndex == _playerStorage.getAll().size()) {
+			return 0;
+		}
+		
+		return _currentPlayerIndex;
+	}
+
+	public void assertCurrentPlayerTurnFinished() throws PlayersTurnNotFinishedException {
+		
+		if (_playerReal.get(_currentPlayerIndex).hasTurn()) {
+			
+		} else {
+			throw new PlayersTurnNotFinishedException("Player's turn not finished!");
+		}
+		
 	}	
 }

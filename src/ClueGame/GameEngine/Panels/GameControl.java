@@ -3,6 +3,8 @@ package ClueGame.GameEngine.Panels;
 import java.awt.Color;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,7 +16,7 @@ import javax.swing.border.TitledBorder;
 
 import ClueGame.GameEngine.ViewModels.PlayerView;
 
-public class GameControl extends JPanel {
+public class GameControl extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField _playerName;
@@ -99,6 +101,8 @@ public class GameControl extends JPanel {
 		
 		JButton next = new JButton("NEXT!");
 		panel.add(next);
+		next.addActionListener(this);
+
 
 		return panel;
 	}
@@ -130,5 +134,13 @@ public class GameControl extends JPanel {
 		frame.setSize(750, 180); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		frame.setVisible(true); 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getActionCommand() == "NEXT!") {
+			
+		}
 	}
 }

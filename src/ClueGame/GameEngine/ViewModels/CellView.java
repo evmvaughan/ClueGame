@@ -1,8 +1,6 @@
 package ClueGame.GameEngine.ViewModels;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -36,7 +34,7 @@ public class CellView extends JPanel {
 	private String _roomLabel;
 	
 	private Color _color;
-	
+		
 	public CellView(BoardCell cell, int adjustedWidth, int adjustedHeight) {
 
 		_boardCell = cell;
@@ -46,8 +44,7 @@ public class CellView extends JPanel {
 		_width = adjustedWidth;
 		_height = adjustedHeight;
 				
-        PanelListener listener = new PanelListener();
-        this.addMouseListener(listener);
+
 	}
 	
 	public CellView(BoardCell cell, PlayerView playerView, int width, int height) {
@@ -58,9 +55,6 @@ public class CellView extends JPanel {
 		
 		_width = width;
 		_height = height;
-		
-        PanelListener listener = new PanelListener();
-        this.addMouseListener(listener);
 	}
 
 	@Override
@@ -91,10 +85,10 @@ public class CellView extends JPanel {
 		
 		if (_isRoomLabel) {
 			
-			Font font = new Font("font", Font.BOLD, 200);
+			Font font = new Font("font", Font.BOLD, 10);
 			g.setFont(font);
 			g.setColor(Color.DARK_GRAY);
-			g.drawString("FUCK", 0, 0);
+			g.drawString(_roomLabel, 0, 0);
 
 		}
 	}
@@ -163,34 +157,6 @@ public class CellView extends JPanel {
 		return _isRoomLabel;
 	}
 	
-	public void drawRoomLabel() {
-		
-	}
-	
-    private class PanelListener implements MouseListener {
-
-        @Override
-        public void mouseClicked(MouseEvent event) {
-            Object source = event.getSource();
-            if(source instanceof JPanel){
-            	System.out.println(event.getSource());
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent arg0) {}
-
-        @Override
-        public void mouseExited(MouseEvent arg0) {}
-
-        @Override
-        public void mousePressed(MouseEvent arg0) {
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent arg0) {}
-
-    }
 	
 	@Override
 	public String toString() {

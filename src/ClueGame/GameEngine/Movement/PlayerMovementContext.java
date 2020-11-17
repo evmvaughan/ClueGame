@@ -53,4 +53,14 @@ public class PlayerMovementContext {
 	public Set<Room> getRoomHistory() {
 		return _roomHistory;
 	}
+
+	public void setCurrentCell(BoardCell cell) {
+		_cellHistory.add(cell);
+		_cell = cell;
+	}
+	
+	public void setCurrentRoom(Room room) {
+		_roomHistory.add(room);
+		_room = room;
+	}
 }
