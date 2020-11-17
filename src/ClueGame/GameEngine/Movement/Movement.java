@@ -1,6 +1,7 @@
 package ClueGame.GameEngine.Movement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
@@ -74,7 +75,7 @@ public class Movement {
 	///////////////////////////////////////////////////////////////////////////////////
 	// Fetch the movement context for the specified player and generate a new target //
 	///////////////////////////////////////////////////////////////////////////////////
-	public void getSelectedTargetsForPlayer(ComputerPlayer player, int step) {
+	public void getSelectedTargetsForPlayer(Player player, int step) {
 		
 		PlayerMovementContext playerMovementContext = null;
 		
@@ -85,11 +86,26 @@ public class Movement {
 				break;
 			}
 		}
-
-		BoardCell targetCell = getTargetCellFromMovementContext(playerMovementContext, step);
-		Room targetRoom = _roomService.getRoomFromCell(targetCell);
 		
-		player.setTarget(targetCell, targetRoom);
+		if (player instanceof ComputerPlayer) {
+			BoardCell targetCell = getTargetCellFromMovementContext(playerMovementContext, step);
+			Room targetRoom = _roomService.getRoomFromCell(targetCell);
+			
+			LocationDTO targetLocation = new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn());
+			
+			((ComputerPlayer) player).setTargetLocation(targetLocation);
+		} else {
+			
+			ArrayList<LocationDTO> targets = new ArrayList<LocationDTO>();
+			
+			_cellService.calcTargets(playerMovementContext.getCell(), step);
+			
+			for (BoardCell cell : _cellService.getTargets()) {
+				targets.add(new LocationDTO(_roomService.getRoomFromCell(cell).getName(), cell.getRow(), cell.getColumn()));
+			}
+			
+			player.setTargets(targets);
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////

@@ -26,6 +26,8 @@ public class CellView extends JPanel {
 	private boolean _isRoom;
 	private boolean _isDoorway;
 	
+	private boolean _isTarget;
+	
 	private DoorDirection _doorDirection;
 	private int _doorShiftX;
 	private int _doorShiftY;
@@ -90,6 +92,11 @@ public class CellView extends JPanel {
 			g.setColor(Color.DARK_GRAY);
 			g.drawString(_roomLabel, 0, 0);
 
+		}
+		
+		if (_isTarget) {
+			g.setColor(Color.CYAN);
+			g.fillRect(0, 0, _width, _height);
 		}
 	}
 	
@@ -172,5 +179,27 @@ public class CellView extends JPanel {
 		_width = width;
 		_height = height;
 		
+	}
+
+	public BoardCell getCell() {
+		return _boardCell;
+	}
+
+	public void setAsTarget(boolean isTarget) {
+		_isTarget = isTarget;
+	}
+	
+	public boolean isTarget() {
+		return _isTarget;
+	}
+
+	public void clearPlayer() {
+		_playerView = null;
+		_hasPlayer = false;
+	}
+
+	public void updatePlayer(PlayerView playerView) {
+		_playerView = playerView;
+		_hasPlayer = true;
 	}
 }

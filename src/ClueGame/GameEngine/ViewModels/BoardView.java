@@ -16,10 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ClueGame.Board.Entities.Cell.BoardCell;
+import ClueGame.Board.Entities.Room.Room;
 import ClueGame.Board.Services.BoardService;
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.Movement.PlayerMovementContext;
+import ClueGame.Playables.Entities.Player.HumanPlayer;
+import ClueGame.Playables.Entities.Player.LocationDTO;
+import ClueGame.Playables.Entities.Player.Player;
+import ClueGame.Playables.Services.PlayerService;
 
 public class BoardView extends JPanel {
 	
@@ -35,6 +40,7 @@ public class BoardView extends JPanel {
 	private ArrayList<PlayerView> _playerViews;
 	
 	private BoardService _boardService;
+	private PlayerService _playerService;
 	
 	private PanelListener _listener;
 	
@@ -44,6 +50,7 @@ public class BoardView extends JPanel {
 		_playerViews = new ArrayList<PlayerView>();
 		
 		_boardService = BoardService.getInstance();
+		_playerService = PlayerService.getInstance();
 		
 		_width = width;
 		_height = height;
@@ -53,10 +60,29 @@ public class BoardView extends JPanel {
 		
 		gatherBoardDimensions();
 		drawBoardCells();
-
+		
 		setLayout(new GridLayout(_numberOfCellColumns + 1, _numberOfCellRows + 1));
 	}
 	
+	private void drawPlayerTargetCells() {
+		
+		for (CellView cell : _cellViews) cell.setAsTarget(false);
+		
+		if (_playerService.getCurrentPlayer().turnLocked()) {
+			
+			ArrayList<LocationDTO> targets = _playerService.getCurrentPlayer().getTargets();
+			
+			for  (LocationDTO target : targets) {
+				
+				for (CellView cell : _cellViews) {
+					if (cell.getCell().getRow() == target.getCurrentRow() && cell.getCell().getColumn() == target.getCurrentColumn()) {
+						cell.setAsTarget(true);
+					}
+				}
+			}
+		}		
+	}
+
 	private void gatherBoardDimensions() {
 		_numberOfCellRows = _boardService.getGrid().size();
 		_numberOfCellColumns = _boardService.getGrid().get(0).size();
@@ -69,6 +95,8 @@ public class BoardView extends JPanel {
 		_height = getHeight();
 
 		updateCellSize();
+		drawPlayerTargetCells();
+		updatePlayerLocations();
 
 	}
 	
@@ -120,10 +148,23 @@ public class BoardView extends JPanel {
 		
 	}
 	
-	private void updatePlayerView(PlayerView player) {
-		for (PlayerView view : _playerViews) {
-			if (player.getPlayer() == view.getPlayer()) {
+	private void updatePlayerLocations() {
+		
+		for (CellView cell : _cellViews) cell.clearPlayer();
+		
+		for (CellView cell : _cellViews) {
+			
+			for (PlayerMovementContext movement : GameEngine.Movement.getPlayerMovementContexts()) {
 				
+				if (movement.getCell() == cell.getCell()) {
+					
+					PlayerView playerView = null;
+					
+					for (PlayerView view : _playerViews) 
+						if (movement.getPlayer() == view.getPlayer()) playerView = view;
+	
+					cell.updatePlayer(playerView);
+				}
 			}
 		}
 	}
@@ -132,8 +173,27 @@ public class BoardView extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent event) {
+               	
             Object source = event.getSource();
-            if(source instanceof JPanel){
+            if(source instanceof CellView){
+            	
+            	if (((CellView) source).isTarget()) {
+            		
+            		Player player = _playerService.getCurrentPlayer();
+            		
+                	player.setTurnLock(false);
+                	                	
+                	BoardCell targetCell = ((CellView) source).getCell();
+                	Room targetRoom = BoardServiceCollection.RoomService.getRoomFromCell(targetCell);
+                	
+                	((HumanPlayer) player).moveToTarget(new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn()));
+                	
+                	repaint();
+                	
+            	} else {
+            		System.out.println("Invalid movement!");
+            	}
+
             	System.out.println(event.getSource());
             }
         }

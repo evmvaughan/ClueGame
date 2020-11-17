@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import ClueGame.GameEngine.Commands.UserInteractionCommand;
+import ClueGame.GameEngine.Commands.UserInteractionCommandHandler;
 import ClueGame.GameEngine.ViewModels.PlayerView;
 
 public class GameControl extends JPanel implements ActionListener {
@@ -25,8 +27,12 @@ public class GameControl extends JPanel implements ActionListener {
 
 	private JTextField _guessResult;
 	private JTextField _guess;
+	
+	private UserInteractionCommandHandler _commandHandler;
 
 	public GameControl() {
+		
+		_commandHandler = new UserInteractionCommandHandler();
 		
 		setLayout(new GridLayout(2, 0));
 		JPanel internalPanel = turnInformation();
@@ -139,8 +145,10 @@ public class GameControl extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getActionCommand() == "NEXT!") {
-			
-		}
+		UserInteractionCommand command = new UserInteractionCommand(e.getActionCommand());
+		
+		_commandHandler.Handle(command);
+
+		repaint();
 	}
 }

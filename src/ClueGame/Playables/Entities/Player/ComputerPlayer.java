@@ -3,8 +3,6 @@ package ClueGame.Playables.Entities.Player;
 import java.util.ArrayList;
 import java.util.Random;
 
-import ClueGame.Board.Entities.Cell.BoardCell;
-import ClueGame.Board.Entities.Room.Room;
 import ClueGame.Playables.Entities.Card.Card;
 import ClueGame.Playables.Entities.Card.CardType;
 import ClueGame.Playables.Entities.Player.Guess.Suggestion;
@@ -31,8 +29,8 @@ public class ComputerPlayer extends Player {
 		EventBus.getInstance().Publish(new PlayerSelectingTargetsEvent(this, step));
 	}
 
-	public void setTarget(BoardCell target, Room room) {
-		_targetLocation = new LocationDTO(room.getName(), target.getRow(), target.getColumn());
+	public void setTargetLocation(LocationDTO targetLocation) {
+		_targetLocation = targetLocation;
 	}
 
 	public LocationDTO moveToTarget() {

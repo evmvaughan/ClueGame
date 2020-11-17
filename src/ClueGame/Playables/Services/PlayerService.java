@@ -30,6 +30,7 @@ public class PlayerService implements ISingleton<PlayerService> {
 	private Map<Integer, Player> _playerReal;
 	
 	private int _currentPlayerIndex;
+	private Player _currentPlayer;
 	
 	private PlayerService() {
 		_playerStorage = PlayerStorage.getInstance();
@@ -83,7 +84,13 @@ public class PlayerService implements ISingleton<PlayerService> {
 		int playerIndex = 0;
 		
 		for (Player player : getPlayers()) {
+			
+			if (player.hasTurn()) {
+				_currentPlayerIndex = playerIndex;
+			}
+			
 			playerMap.put(playerIndex, player);
+			
 			playerIndex++;
 		}
 		
@@ -126,6 +133,10 @@ public class PlayerService implements ISingleton<PlayerService> {
 					case "PC":
 						
 						player = new HumanPlayer(playerName, playerID);
+						player.setTurn(true);
+						
+						_currentPlayer = player;
+						
 						_playerStorage.addOne(player);
 						break;
 						
@@ -135,7 +146,7 @@ public class PlayerService implements ISingleton<PlayerService> {
 						break;
 
 					}
-					
+										
 					updatePlayerLocation(player.getName(), "", locationX, locationY);
 				}
 			}
@@ -155,23 +166,41 @@ public class PlayerService implements ISingleton<PlayerService> {
 		
 		createPlayerReal();
 	}
-	
-	private int getNextPlayerIndex() {
-		
-		if (_currentPlayerIndex == _playerStorage.getAll().size()) {
-			return 0;
-		}
-		
-		return _currentPlayerIndex;
-	}
 
 	public void assertCurrentPlayerTurnFinished() throws PlayersTurnNotFinishedException {
-		
-		if (_playerReal.get(_currentPlayerIndex).hasTurn()) {
-			
-		} else {
+				
+		if (_currentPlayer.turnLocked()) {
 			throw new PlayersTurnNotFinishedException("Player's turn not finished!");
 		}
+	}
+
+	public void initiateNextPlayerTurn() {
 		
+		_currentPlayer.setTurn(false); // Set current player's turn to false
+		
+		_currentPlayerIndex++;
+		
+		if (_currentPlayerIndex == getPlayers().size()) { // Rotate to the zero player index
+			_currentPlayerIndex = 0;
+		}
+		
+		_currentPlayer = _playerReal.get(_currentPlayerIndex); // Set next player's turn to true
+		
+		_currentPlayer.setTurn(true);
+				
 	}	
+	
+	
+	public Player getCurrentPlayer() {
+		
+		return _currentPlayer;
+		
+	}
+
+	public HumanPlayer getHumanPlayer() {
+		for (Player player : getPlayers())
+			if (player instanceof HumanPlayer) return (HumanPlayer) player;
+		
+		return null;
+	}
 }

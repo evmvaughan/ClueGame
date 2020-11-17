@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import ClueGame.Board.Entities.Cell.BoardCell;
+import ClueGame.Board.Entities.Room.Room;
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.Movement.Movement;
@@ -80,7 +82,12 @@ public class GameAITests {
 		
 		playerMovements.updatePlayerMovementContext(player, new LocationDTO("Aruba", 8, 2)); // Inform the game that the player has seen Aruba
 		
-		player.setTarget(BoardServiceCollection.CellService.getCell(12, 1), BoardServiceCollection.RoomService.getRoomFromName("Water"));
+		BoardCell targetCell = BoardServiceCollection.CellService.getCell(12, 1);
+		Room targetRoom = BoardServiceCollection.RoomService.getRoomFromCell(targetCell);
+		
+		LocationDTO targetLocation = new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn());
+		
+		player.setTargetLocation(targetLocation);
 		
 		player.moveToTarget();
 		

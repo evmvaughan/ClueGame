@@ -19,14 +19,18 @@ import ClueGame.Playables.Services.PlayablesServiceCollection;
 public class CardManagement extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	private HumanPlayer _player;
 
-	public CardManagement(Player player) {
+	public CardManagement() {
+		
+		_player = (HumanPlayer) PlayablesServiceCollection.PlayerService.getHumanPlayer();
 
 		setLayout(new GridLayout(3, 1));
 		setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
-		add(new Section("People").getPanel(player));
-		add(new Section("Rooms").getPanel(player));
-		add(new Section("Weapons").getPanel(player));
+		add(new Section("People").getPanel(_player));
+		add(new Section("Rooms").getPanel(_player));
+		add(new Section("Weapons").getPanel(_player));
 	}
 
 
@@ -107,9 +111,7 @@ public class CardManagement extends JPanel {
 
 		gameEngine.initializeAll();
 
-		HumanPlayer player = (HumanPlayer) PlayablesServiceCollection.PlayerService.getPlayers().get(5);
-
-		CardManagement panel = new CardManagement(player); 
+		CardManagement panel = new CardManagement(); 
 		JFrame frame = new JFrame(); 
 		frame.setContentPane(panel); 
 		frame.setSize(230, 700); 

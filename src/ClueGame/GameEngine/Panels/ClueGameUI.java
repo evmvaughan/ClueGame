@@ -14,7 +14,9 @@ import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
 
-public class ClueGame extends JPanel {
+public class ClueGameUI extends JPanel {
+	
+	private static ClueGameUI instance = new ClueGameUI();
 	
 	public static final int _frameWidth = 800;
 	public static final int _frameHeight = 850;
@@ -26,11 +28,16 @@ public class ClueGame extends JPanel {
 	public static final int _controlHeight = _frameHeight - _cardManagementHeight;
 	
 	
-	public ClueGame(Player player) {
-		
+	private ClueGameUI() {}
+	
+	public static ClueGameUI getInstance() {
+		return instance;
+	}
+	
+	public void initializeUI() {
 		setLayout(new BorderLayout());
 		
-		CardManagement cardManagement = new CardManagement(player);
+		CardManagement cardManagement = new CardManagement();
 		BoardView board = new BoardView(_frameWidth - _cardManagementWidth, _frameHeight - _controlHeight);
 		GameControl gameControl = new GameControl();
 		
@@ -41,7 +48,6 @@ public class ClueGame extends JPanel {
 		add(cardManagement, BorderLayout.EAST);
 		add(board, BorderLayout.CENTER);
 		add(gameControl, BorderLayout.SOUTH);
-		
 	}
 	
 	public void showSplashScreen(JFrame frame, Player player) {
@@ -54,14 +60,20 @@ public class ClueGame extends JPanel {
 
 	}
 	
+	public void updateUIComponents() {
+		repaint();
+	}
+	
 	public static void main(String[] args) {
 		GameEngine gameEngine = GameEngine.getInstance();
 		
 		gameEngine.initializeAll();
 		
 		HumanPlayer player = (HumanPlayer) PlayablesServiceCollection.PlayerService.getPlayers().get(5);
+				
+		ClueGameUI panel = ClueGameUI.getInstance(); 
 		
-		ClueGame panel = new ClueGame(player); 
+		panel.initializeUI();
 
 		JFrame frame = new JFrame("Clue Game"); 
 		frame.setContentPane(panel); 
@@ -70,6 +82,5 @@ public class ClueGame extends JPanel {
 		frame.setVisible(true); 
 		
 		panel.showSplashScreen(frame, player);
-		
 	}
 }

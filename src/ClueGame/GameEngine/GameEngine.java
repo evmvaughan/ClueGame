@@ -1,8 +1,10 @@
 package ClueGame.GameEngine;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import ClueGame.Board.Services.BoardServiceCollection;
+import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
 import ClueGame.Playables.Services.PlayerService;
@@ -62,9 +64,9 @@ public class GameEngine implements ISingleton<GameEngine>{
 		gameEngine.initializeAll();
 	}
 
-//	public void checkPlayerTurnStatus() {
-//		_playerService.
-//	}
+	public void renderPlayerTargets(ArrayList<LocationDTO> targets) {
 		
+	}
+
 
 }
