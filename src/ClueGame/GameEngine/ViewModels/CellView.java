@@ -79,11 +79,6 @@ public class CellView extends JPanel {
 			((Graphics2D) g).rotate(Math.toRadians(getRotationFromDirection()));
 			g.fillRect(_doorShiftX, _doorShiftY, _width, _height/4);
 		}
-
-		if (_hasPlayer) {
-			g.setColor(_playerView.getColor());
-	         g.fillOval(0, 0, _width, _height);
-		}
 		
 		if (_isRoomLabel) {
 			
@@ -97,6 +92,11 @@ public class CellView extends JPanel {
 		if (_isTarget) {
 			g.setColor(Color.CYAN);
 			g.fillRect(0, 0, _width, _height);
+		}
+		
+		if (_hasPlayer) {
+			g.setColor(_playerView.getColor());
+	         g.fillOval(0, 0, _width, _height);
 		}
 	}
 	

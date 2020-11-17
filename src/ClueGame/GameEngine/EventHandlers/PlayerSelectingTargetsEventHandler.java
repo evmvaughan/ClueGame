@@ -26,6 +26,5 @@ public class PlayerSelectingTargetsEventHandler<PlayerSelectingTargetsEvent> imp
 			player.setTurnLock(true);			
 		}
 		
-		ClueGameUI.getInstance().updateUIComponents();
 	}
 }

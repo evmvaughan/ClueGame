@@ -192,4 +192,8 @@ public abstract class Player implements IEntity {
 		
 		return null;
 	}
+
+	public Integer getRoll() {
+		return _roll;
+	}
 }

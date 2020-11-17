@@ -11,6 +11,7 @@ import ClueGame.Board.Entities.Room.Room;
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.Movement.Movement;
+import ClueGame.GameEngine.Panels.ClueGameUI;
 import ClueGame.Playables.Entities.Player.ComputerPlayer;
 import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
@@ -24,7 +25,7 @@ public class GameAITests {
 		GameEngine gameEngine = GameEngine.getInstance();
 
 		gameEngine.initializeAll();
-		
+				
 	}
 
 	@Test

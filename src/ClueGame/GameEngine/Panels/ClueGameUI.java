@@ -3,6 +3,7 @@ package ClueGame.GameEngine.Panels;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -10,6 +11,8 @@ import javax.swing.JPanel;
 
 import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.ViewModels.BoardView;
+import ClueGame.GameEngine.ViewModels.CellView;
+import ClueGame.GameEngine.ViewModels.PlayerView;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
@@ -18,15 +21,21 @@ public class ClueGameUI extends JPanel {
 	
 	private static ClueGameUI instance = new ClueGameUI();
 	
-	public static final int _frameWidth = 800;
-	public static final int _frameHeight = 850;
+	public static final int FrameWidth = 800;
+	public static final int FrameHeight = 850;
 	
-	public static final int _cardManagementWidth = 200;
-	public static final int _cardManagementHeight = _frameHeight - 150;
+	public static final int CardManagementWidth = 200;
+	public static final int CardManagementHeight = FrameHeight - 150;
 	
-	public static final int _controlWidth = _frameWidth;
-	public static final int _controlHeight = _frameHeight - _cardManagementHeight;
+	public static final int ControlWidth = FrameWidth;
+	public static final int ControlHeight = FrameHeight - CardManagementHeight;
 	
+	public static ArrayList<PlayerView> PlayerViews;
+	public static ArrayList<CellView> CellViews;
+	
+	private BoardView _board;
+	private GameControl _gameControl;
+	private CardManagement _cardManagement;
 	
 	private ClueGameUI() {}
 	
@@ -37,17 +46,18 @@ public class ClueGameUI extends JPanel {
 	public void initializeUI() {
 		setLayout(new BorderLayout());
 		
-		CardManagement cardManagement = new CardManagement();
-		BoardView board = new BoardView(_frameWidth - _cardManagementWidth, _frameHeight - _controlHeight);
-		GameControl gameControl = new GameControl();
+		_cardManagement = new CardManagement();
+		_board = new BoardView(FrameWidth - CardManagementWidth, FrameHeight - ControlHeight);
+		_gameControl = new GameControl();
 		
-		cardManagement.setPreferredSize(new Dimension(_cardManagementWidth, _cardManagementHeight));
-		board.setPreferredSize(new Dimension(_frameWidth - _cardManagementWidth, _frameHeight - _controlHeight));
-		gameControl.setPreferredSize(new Dimension(_controlWidth, _controlHeight));
+		_cardManagement.setPreferredSize(new Dimension(CardManagementWidth, CardManagementHeight));
+		_board.setPreferredSize(new Dimension(FrameWidth - CardManagementWidth, FrameHeight - ControlHeight));
+		_gameControl.setPreferredSize(new Dimension(ControlWidth, ControlHeight));
 
-		add(cardManagement, BorderLayout.EAST);
-		add(board, BorderLayout.CENTER);
-		add(gameControl, BorderLayout.SOUTH);
+		add(_cardManagement, BorderLayout.EAST);
+		add(_board, BorderLayout.CENTER);
+		add(_gameControl, BorderLayout.SOUTH);
+		
 	}
 	
 	public void showSplashScreen(JFrame frame, Player player) {
@@ -62,6 +72,12 @@ public class ClueGameUI extends JPanel {
 	
 	public void updateUIComponents() {
 		repaint();
+		
+		Player currentPlayer = PlayablesServiceCollection.PlayerService.getCurrentPlayer();
+		
+		for (PlayerView view : PlayerViews) 
+			if (view.getPlayer() == currentPlayer) _gameControl.setTurn(view, currentPlayer.getRoll());
+
 	}
 	
 	public static void main(String[] args) {
@@ -69,7 +85,7 @@ public class ClueGameUI extends JPanel {
 		
 		gameEngine.initializeAll();
 		
-		HumanPlayer player = (HumanPlayer) PlayablesServiceCollection.PlayerService.getPlayers().get(5);
+		HumanPlayer player = (HumanPlayer) PlayablesServiceCollection.PlayerService.getHumanPlayer();
 				
 		ClueGameUI panel = ClueGameUI.getInstance(); 
 		
@@ -77,10 +93,16 @@ public class ClueGameUI extends JPanel {
 
 		JFrame frame = new JFrame("Clue Game"); 
 		frame.setContentPane(panel); 
-		frame.setSize(_frameWidth, _frameHeight); 
+		frame.setSize(FrameWidth, FrameHeight); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		frame.setVisible(true); 
 		
 		panel.showSplashScreen(frame, player);
+		
+		player.rollDice();
+		player.selectTargetFromRoll();
+		
+		panel.updateUIComponents();
+
 	}
 }

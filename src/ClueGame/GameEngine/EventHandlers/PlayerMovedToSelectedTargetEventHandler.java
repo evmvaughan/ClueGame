@@ -3,6 +3,7 @@ package ClueGame.GameEngine.EventHandlers;
 import ClueGame.GameEngine.GameEngine;
 
 import ClueGame.GameEngine.Movement.Movement;
+import ClueGame.GameEngine.Panels.ClueGameUI;
 import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
 import SeedWork.IEventHandler;
@@ -21,5 +22,6 @@ public class PlayerMovedToSelectedTargetEventHandler<PlayerMovedToSelectedTarget
 		Movement playerMovement = GameEngine.Movement;
 		
 		playerMovement.updatePlayerMovementContext(player, newLocation);
+		
 	}
 }

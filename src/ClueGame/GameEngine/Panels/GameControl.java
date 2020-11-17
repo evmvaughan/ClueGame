@@ -1,7 +1,6 @@
 package ClueGame.GameEngine.Panels;
 
 import java.awt.Color;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
@@ -16,13 +16,14 @@ import javax.swing.border.TitledBorder;
 
 import ClueGame.GameEngine.Commands.UserInteractionCommand;
 import ClueGame.GameEngine.Commands.UserInteractionCommandHandler;
+import ClueGame.GameEngine.ViewModels.CellView;
 import ClueGame.GameEngine.ViewModels.PlayerView;
+import Exceptions.PlayersTurnNotFinishedException;
 
 public class GameControl extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField _playerName;
-	private Color _playerColor;
 	private JTextField _roll;
 
 	private JTextField _guessResult;
@@ -44,15 +45,14 @@ public class GameControl extends JPanel implements ActionListener {
 		internalPanel = guessResult();
 		add(internalPanel);
 	}
-
+	
 	private void setGuessResult(String guessResult) {
 		_guessResult.setText(guessResult);
 	}
 	
-	private void setTurn(PlayerView computerPlayerView, Integer roll) {
-		_playerName.setText(computerPlayerView.getName());
-		_playerColor = Color.orange;
-		_playerName.setBackground(_playerColor);
+	public void setTurn(PlayerView playerView, Integer roll) {
+		_playerName.setText(playerView.getName());
+		_playerName.setBackground(playerView.getColor());
 		_roll.setText(roll.toString());
 	}
 	
@@ -143,12 +143,20 @@ public class GameControl extends JPanel implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		
-		UserInteractionCommand command = new UserInteractionCommand(e.getActionCommand());
+		UserInteractionCommand command = new UserInteractionCommand(event.getActionCommand());
 		
-		_commandHandler.Handle(command);
-
-		repaint();
+		try {
+			_commandHandler.Handle(command);
+		} catch (PlayersTurnNotFinishedException e) {
+			
+    		String message = "Your turn is not finished!";
+    		
+    		JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+    		
+		}
+		
+		ClueGameUI.getInstance().updateUIComponents();
 	}
 }

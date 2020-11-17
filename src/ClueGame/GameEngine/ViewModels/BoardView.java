@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ClueGame.Board.Entities.Cell.BoardCell;
@@ -21,6 +22,7 @@ import ClueGame.Board.Services.BoardService;
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.Movement.PlayerMovementContext;
+import ClueGame.GameEngine.Panels.ClueGameUI;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
@@ -58,6 +60,8 @@ public class BoardView extends JPanel {
         _listener = new PanelListener();
         this.addMouseListener(_listener);
 		
+		ClueGameUI.getInstance();
+        
 		gatherBoardDimensions();
 		drawBoardCells();
 		
@@ -97,6 +101,16 @@ public class BoardView extends JPanel {
 		updateCellSize();
 		drawPlayerTargetCells();
 		updatePlayerLocations();
+		
+		ClueGameUI.PlayerViews = _playerViews;
+		ClueGameUI.CellViews = _cellViews;
+		
+		int cellWidth = _width / _numberOfCellColumns;
+		
+		g.setColor(Color.BLACK);
+		Font font = new Font("Sans Serif", Font.PLAIN, 12);
+		g.setFont(font);
+		g.drawString("CONSERVATORY", 1*cellWidth, 2*cellWidth);
 
 	}
 	
@@ -167,6 +181,7 @@ public class BoardView extends JPanel {
 				}
 			}
 		}
+		
 	}
 	
     private class PanelListener implements MouseListener {
@@ -187,14 +202,17 @@ public class BoardView extends JPanel {
                 	Room targetRoom = BoardServiceCollection.RoomService.getRoomFromCell(targetCell);
                 	
                 	((HumanPlayer) player).moveToTarget(new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn()));
-                	
-                	repaint();
-                	
+                	                	
             	} else {
+            		
+            		String message = "The cell you selected is not a target!";
+            		            		
+            		JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+            		
             		System.out.println("Invalid movement!");
             	}
-
-            	System.out.println(event.getSource());
+            	
+        		ClueGameUI.getInstance().updateUIComponents();
             }
         }
 
