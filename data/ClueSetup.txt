@@ -12,12 +12,12 @@ Room, Iceland, I
 Space, Unused, X
 Space, Water, W
 // Players
-Player, NPC, Sam, S
-Player, NPC, Casey, C
-Player, NPC, Riley, R
-Player, NPC, Mia, M
-Player, NPC, Kim, K
-Player, PC, Nick, N
+Player, NPC, Sam, S, 5, 24
+Player, NPC, Casey, C, 19, 24
+Player, NPC, Riley, R, 25, 5
+Player, NPC, Mia, M, 18, 0
+Player, NPC, Kim, K, 5, 0
+Player, PC, Nick, N, 0, 5
 // Cards
 Card, Player, Sam, S
 Card, Player, Casey, C
