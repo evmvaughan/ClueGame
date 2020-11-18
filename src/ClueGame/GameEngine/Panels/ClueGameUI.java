@@ -2,7 +2,6 @@ package ClueGame.GameEngine.Panels;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -13,6 +12,7 @@ import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.ViewModels.BoardView;
 import ClueGame.GameEngine.ViewModels.CellView;
 import ClueGame.GameEngine.ViewModels.PlayerView;
+import ClueGame.GameEngine.ViewModels.RoomLabel;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
@@ -32,6 +32,7 @@ public class ClueGameUI extends JPanel {
 	
 	public static ArrayList<PlayerView> PlayerViews;
 	public static ArrayList<CellView> CellViews;
+	public static ArrayList<RoomLabel> RoomLabels;
 	
 	private BoardView _board;
 	private GameControl _gameControl;
@@ -77,7 +78,7 @@ public class ClueGameUI extends JPanel {
 		
 		for (PlayerView view : PlayerViews) 
 			if (view.getPlayer() == currentPlayer) _gameControl.setTurn(view, currentPlayer.getRoll());
-
+		
 	}
 	
 	public static void main(String[] args) {
@@ -104,5 +105,9 @@ public class ClueGameUI extends JPanel {
 		
 		panel.updateUIComponents();
 
+	}
+
+	public void addRoomLabel(RoomLabel label) {
+		RoomLabels.add(label);
 	}
 }
