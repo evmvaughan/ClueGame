@@ -8,6 +8,7 @@ import ClueGame.Playables.Entities.Card.Collection.Hand;
 import ClueGame.Playables.Entities.Player.Guess.Accusation;
 import ClueGame.Playables.Entities.Player.Guess.Suggestion;
 import ClueGame.Playables.Events.AccusationAssertedEvent;
+import ClueGame.Playables.Events.PlayerMovedToSelectedTargetEvent;
 import ClueGame.Playables.Events.PlayerSelectingTargetsEvent;
 import ClueGame.Playables.Events.SuggestionAssertedEvent;
 import Exceptions.PlayerSuggestionNotInRoomException;
@@ -88,7 +89,9 @@ public abstract class Player implements IEntity {
 	}
 	
 	public void updateLocation(LocationDTO location) {
+		
 		_currentLocation = location;
+		
 	}
 	
 	public LocationDTO getLocation() {
@@ -135,6 +138,15 @@ public abstract class Player implements IEntity {
 	public ArrayList<LocationDTO> getTargets() {
 		return _targets;
 	}
+	
+	public LocationDTO moveToTarget(LocationDTO targetLocation) {
+		
+		updateLocation(targetLocation);
+		
+		EventBus.getInstance().Publish(new PlayerMovedToSelectedTargetEvent(this, _currentLocation));
+		
+		return _currentLocation;
+	}
 
 	public void setTurnLock(boolean status) {
 		_turnLock = status;
@@ -172,6 +184,10 @@ public abstract class Player implements IEntity {
 	public Card disproveSuggestion(Suggestion suggestion) {
 		
 		ArrayList<Card> disprovals = new ArrayList<Card>();
+		
+		if (suggestion.getPersonCard().getName().equals(this._playerName)) {
+			moveToTarget(new LocationDTO(suggestion.getRoomCard().getName(), _currentLocation.getCurrentRow(), _currentLocation.getCurrentColumn()));
+		}
 		
 		for (Card card : _hand.getCards()) {
 			

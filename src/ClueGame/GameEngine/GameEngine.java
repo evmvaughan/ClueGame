@@ -27,9 +27,10 @@ public class GameEngine implements ISingleton<GameEngine>{
 	}
 	
 	public void initializeAll() {
+		
 		BoardServiceCollection.initialize();
 		PlayablesServiceCollection.initialize();
-		
+				
 		try {
 			BoardServiceCollection.InitConfigurationService.InitializeBoard("ClueLayout.csv", "ClueSetup.txt");	
 			PlayablesServiceCollection.InitConfigurationService.initializePayables("ClueSetup.txt");	
@@ -41,7 +42,7 @@ public class GameEngine implements ISingleton<GameEngine>{
 		
 		PlayablesServiceCollection.Dealer.dealRandomSolution();
 		PlayablesServiceCollection.Dealer.shuffleAndDealCards();
-		
+					
 		Movement = ClueGame.GameEngine.Movement.Movement.getInstance();
 		
 		initializePlayers();

@@ -153,7 +153,7 @@ public class GameControl extends JPanel implements ActionListener {
 			
     		String message = "Your turn is not finished!";
     		
-    		JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+    		JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Clue Game Message", JOptionPane.INFORMATION_MESSAGE);
     		
 		}
 		

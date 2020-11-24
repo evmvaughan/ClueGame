@@ -233,7 +233,7 @@ public class BoardView extends JPanel {
 
 					String message = "The cell you selected is not a target!";
 
-					JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Welcome to Clue",
+					JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Clue Game Message",
 							JOptionPane.INFORMATION_MESSAGE);
 
 					System.out.println("Invalid movement!");

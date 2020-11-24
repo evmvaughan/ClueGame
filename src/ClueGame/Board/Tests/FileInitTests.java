@@ -112,7 +112,7 @@ public class FileInitTests {
 		assertFalse( cell.isDoorway()) ;
 
 		// this is a label cell to test
-		cell = BoardServiceCollection.CellService.getCell(16, 1);
+		cell = BoardServiceCollection.CellService.getCell(14, 0);
 		room = BoardServiceCollection.RoomService.getRoomFromCell( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Bahamas" ) ;
