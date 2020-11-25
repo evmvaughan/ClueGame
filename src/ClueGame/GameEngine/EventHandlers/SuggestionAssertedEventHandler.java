@@ -20,6 +20,10 @@ public class SuggestionAssertedEventHandler<SuggestionAssertedEvent> implements 
 		Suggestion suggestion = ((ClueGame.Playables.Events.SuggestionAssertedEvent) event).getSuggestion();
 		Player currentPlayer = ((ClueGame.Playables.Events.SuggestionAssertedEvent) event).getPlayer();
 		
+		Player suggestedPlayer = PlayablesServiceCollection.PlayerService.getPlayerByName(suggestion.getPersonCard().getName());
+		
+		suggestedPlayer.moveToTarget(currentPlayer.getLocation());
+				
 		_dealer.distributeSuggestion(suggestion, currentPlayer);
 	}
 }

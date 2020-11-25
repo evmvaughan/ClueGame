@@ -131,4 +131,8 @@ public class CardService implements ISingleton<CardService> {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	public Card getCardByName(String name) {
+		return _cardStorage.getOne(name);
+	}
 }

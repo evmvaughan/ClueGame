@@ -42,9 +42,8 @@ public class PlayerStorage implements ILocalStorage<Player> {
 	}
 
 	public Player getOne(String name) {
-		for (Player player : _players) {
-			if (player.getName() == name) return player;
-		}
+		for (Player player : _players) 
+			if (player.getName().equals(name)) return player;
 		return null;
 	}
 }

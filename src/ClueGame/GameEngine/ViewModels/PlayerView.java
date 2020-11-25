@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.Playables.Entities.Player.Player;
 
 public class PlayerView extends JPanel {
@@ -59,5 +60,9 @@ public class PlayerView extends JPanel {
 	public void updateLocation(int locationX, int locationY) {
 		_locationX = locationX * _width;
 		_locationY = locationY * _height;
+	}
+
+	public boolean isInRoom() {
+		return BoardServiceCollection.CellService.getCell(_player.getLocation().getCurrentRow(),_player.getLocation().getCurrentColumn()).IsRoom();
 	}
 }

@@ -19,9 +19,11 @@ import ClueGame.GameEngine.GameEngine;
 import ClueGame.GameEngine.Movement.Movement;
 import ClueGame.GameEngine.Movement.PlayerMovementContext;
 import ClueGame.GameEngine.Panels.ClueGameUI;
+import ClueGame.GameEngine.Panels.GuessPanel;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
+import ClueGame.Playables.Services.PlayablesServiceCollection;
 import ClueGame.Playables.Services.PlayerService;
 
 public class BoardView extends JPanel {
@@ -43,6 +45,8 @@ public class BoardView extends JPanel {
 	private Movement _movement;
 
 	private PanelListener _listener;
+	
+	private GuessPanel _guessView;
 
 	public BoardView(int width, int height) {
 
@@ -65,7 +69,9 @@ public class BoardView extends JPanel {
 		gatherBoardDimensions();
 
 		mapBoardCellAndPlayerViews();
-
+		
+		_guessView = new GuessPanel();
+		
 	}
 
 	private void drawPlayerTargetCells() {
@@ -114,6 +120,16 @@ public class BoardView extends JPanel {
 		ClueGameUI.PlayerViews = _playerViews;
 		ClueGameUI.CellViews = _cellViews;
 
+	}
+
+	private void handleSuggestions() {
+		for (PlayerView player : _playerViews) {
+			if (player.isInRoom()) {
+				if (player.getPlayer() instanceof HumanPlayer && player.getPlayer().hasTurn()) {
+					_guessView.showGuess();
+				}
+			}
+		}
 	}
 
 	private void drawPlayers(Graphics g) {
@@ -194,12 +210,20 @@ public class BoardView extends JPanel {
 
 	private void updatePlayerLocations() {
 
-		for (PlayerMovementContext movementContext : GameEngine.Movement.getPlayerMovementContexts()) {
+		for (PlayerView playerView : _playerViews) {
+			PlayerMovementContext context = GameEngine.Movement.getPlayersMovementContext(playerView.getPlayer());
+			playerView.updateLocation(context.getCell().getColumn(), context.getCell().getRow());
 
-			for (PlayerView playerView : _playerViews)
-				if (movementContext.getPlayer() == playerView.getPlayer())
-					playerView.updateLocation(movementContext.getCell().getColumn(), movementContext.getCell().getRow());
 		}
+		
+//		for (PlayerMovementContext movementContext : GameEngine.Movement.getPlayerMovementContexts()) {
+//			
+//			for (PlayerView playerView : _playerViews) {
+//				if (movementContext.getPlayer() == playerView.getPlayer())
+//					playerView.updateLocation(movementContext.getCell().getColumn(), movementContext.getCell().getRow());
+//				
+//			}
+//		}
 	}
 
 	private class PanelListener implements MouseListener {
@@ -214,23 +238,36 @@ public class BoardView extends JPanel {
 					clickedCell = cellView;
 				}
 			}
+			
+			if (_guessView.isVisible()) {
+				_guessView.hideGuess();
+			} else if (clickedCell != null) {
 
-			if (clickedCell != null) {
-
+				Player currentPlayer = PlayablesServiceCollection.PlayerService.getCurrentPlayer();
+				
+				PlayerMovementContext context = _movement.getPlayersMovementContext(currentPlayer);
+				
+				Room currentRoom = context.getRoom();
+				BoardCell currentCell = context.getCell();
+				
+				
 				if (clickedCell.isTarget()) {
 
-					Player player = _playerService.getCurrentPlayer();
-
-					player.setTurnLock(false);
+					currentPlayer.setTurnLock(false);
 
 					BoardCell targetCell = clickedCell.getCell();
 					Room targetRoom = BoardServiceCollection.RoomService.getRoomFromCell(targetCell);
 
-					((HumanPlayer) player).moveToTarget(
+					((HumanPlayer) currentPlayer).moveToTarget(
 							new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn()));
+					
+					if (targetCell.isRoomCenter()) _guessView.showGuess();
+
+				} else if (clickedCell.getCell().getRoomId() == currentRoom.getSymbol() && currentCell.isRoomCenter()){ 
+					_guessView.showGuess();
 
 				} else {
-
+				
 					String message = "The cell you selected is not a target!";
 
 					JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Clue Game Message",
@@ -238,6 +275,7 @@ public class BoardView extends JPanel {
 
 					System.out.println("Invalid movement!");
 				}
+
 
 				ClueGameUI.getInstance().updateUIComponents();
 			}

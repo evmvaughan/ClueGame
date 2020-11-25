@@ -11,6 +11,7 @@ import java.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ClueGame.Board.Services.BoardServiceCollection;
+import ClueGame.GameEngine.GameEngine;
 import ClueGame.Playables.Entities.Card.Card;
 import ClueGame.Playables.Entities.Player.ComputerPlayer;
 import ClueGame.Playables.Entities.Player.LocationDTO;
@@ -26,20 +27,9 @@ import SeedWork.EventBus;
 public class GameSolutionTest {
 	@BeforeAll
 	public static void setUp() {
-		PlayablesServiceCollection.initialize();
-		BoardServiceCollection.initialize();
-		EventBus.getInstance();
-		try {
-			PlayablesServiceCollection.InitConfigurationService.initializePayables("ClueSetup.txt");
-			
-			PlayablesServiceCollection.Dealer.dealRandomSolution();
-			PlayablesServiceCollection.Dealer.shuffleAndDealCards();
-			
-		} catch (FileNotFoundException e) {
-			System.out.println(e.getMessage());
-		} catch (BadConfigFormatException e) {
-			System.out.println(e.getMessage());
-		}
+		GameEngine gameEngine = GameEngine.getInstance();
+		
+		gameEngine.initializeAll();
 	}
 	@Test
 	public void checkAccusation()

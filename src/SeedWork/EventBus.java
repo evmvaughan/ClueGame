@@ -5,6 +5,7 @@ import ClueGame.Playables.Events.AccusationAssertedEvent;
 import ClueGame.Playables.Events.PlayablesInitializedEvent;
 import ClueGame.Playables.Events.PlayerMovedToSelectedTargetEvent;
 import ClueGame.Playables.Events.PlayerSelectingTargetsEvent;
+import ClueGame.Playables.Events.SuggestionAssertedEvent;
 
 
 
@@ -22,6 +23,7 @@ public class EventBus implements ISingleton<EventBus> {
 	
 	private PlayablesInitializedEventHandler<PlayablesInitializedEvent> _playablesInitializedEventHandler;
 	private AccusationAssertedEventHandler<AccusationAssertedEvent> _accusationAssertedEventEventHandler;
+	private SuggestionAssertedEventHandler<SuggestionAssertedEvent> _suggestionAssertedEventEventHandler;
 	private PlayerSelectingTargetsEventHandler<PlayerSelectingTargetsEvent> _playerSelectingTargetsEventHandler;
 	private PlayerMovedToSelectedTargetEventHandler<PlayerMovedToSelectedTargetEvent> _playerMovedToSelectedTargetEventHandler;
 
@@ -31,6 +33,7 @@ public class EventBus implements ISingleton<EventBus> {
 	public void initializeHandlers() {
 		_playablesInitializedEventHandler = new PlayablesInitializedEventHandler<PlayablesInitializedEvent>();
 		_accusationAssertedEventEventHandler = new AccusationAssertedEventHandler<AccusationAssertedEvent>();
+		_suggestionAssertedEventEventHandler = new SuggestionAssertedEventHandler<SuggestionAssertedEvent>();
 		_playerSelectingTargetsEventHandler = new PlayerSelectingTargetsEventHandler<PlayerSelectingTargetsEvent>();
 		_playerMovedToSelectedTargetEventHandler = new PlayerMovedToSelectedTargetEventHandler<PlayerMovedToSelectedTargetEvent>();
 	}
@@ -46,6 +49,10 @@ public class EventBus implements ISingleton<EventBus> {
 		
 		if (event instanceof AccusationAssertedEvent) {
 			_accusationAssertedEventEventHandler.Handle((AccusationAssertedEvent) event);
+		}	
+		
+		if (event instanceof SuggestionAssertedEvent) {
+			_suggestionAssertedEventEventHandler.Handle((SuggestionAssertedEvent) event);
 		}	
 		
 		if (event instanceof PlayerSelectingTargetsEvent) {

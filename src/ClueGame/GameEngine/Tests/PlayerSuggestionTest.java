@@ -134,7 +134,7 @@ public class PlayerSuggestionTest {
 		try {
 			Suggestion suggestion = suggestor.makeSuggestion(weapon, person, room);
 			
-			PlayablesServiceCollection.Dealer.distributeSuggestion(suggestion, suggestor);
+//			PlayablesServiceCollection.Dealer.distributeSuggestion(suggestion, suggestor);
 			
 			int playersInSuggestionRoom = 0;
 			
@@ -149,38 +149,6 @@ public class PlayerSuggestionTest {
 		} catch (PlayerSuggestionNotInRoomException e) {
 			System.out.println(e.getMessage());
 		}
-
-		
-//		// Set incorrect cards for all players. 
-//		for (Player player : players) {
-//			player.getHand().setCardAtIndex(wrongRoom, 0);
-//			player.getHand().setCardAtIndex(wrongWeapon, 1);
-//			player.getHand().setCardAtIndex(wrongPerson, 2);
-//		}
-//		
-//		Player suggestor = players.get(3);
-//		suggestor.getHand().setCardAtIndex(room, 0);
-//		suggestor.getHand().setCardAtIndex(weapon, 1);
-//		suggestor.getHand().setCardAtIndex(person, 2);
-//		
-//		
-//		try {
-//			
-//			
-//			// All players have wrong cards (Except for the suggestor). Disproval returns null.
-//			Card disproval = PlayablesServiceCollection.Dealer.distributeSuggestion(suggestion, suggestor);
-//			assertTrue(disproval == null);
-//			
-//			// Two players are given correct cards. The first card disproved is returned.
-//			players.get(0).getHand().setCardAtIndex(room, 0);
-//			players.get(5).getHand().setCardAtIndex(weapon, 0);
-//			
-//			disproval = PlayablesServiceCollection.Dealer.distributeSuggestion(suggestion, suggestor);
-//			assertTrue(disproval == weapon);
-//			
-//		} catch (PlayerSuggestionNotInRoomException e) {
-//			System.out.println(e.getMessage());
-//		}
 	}
 	
 	@Test

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -71,6 +73,7 @@ public class ClueGameUI extends JPanel {
 
 	}
 	
+	
 	public void updateUIComponents() {
 		repaint();
 		
@@ -104,7 +107,7 @@ public class ClueGameUI extends JPanel {
 		player.selectTargetFromRoll();
 		
 		panel.updateUIComponents();
-
+		
 	}
 
 	public void addRoomLabel(RoomLabel label) {

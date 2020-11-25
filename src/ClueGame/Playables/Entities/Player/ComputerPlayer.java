@@ -32,7 +32,7 @@ public class ComputerPlayer extends Player {
 	public void setTargetLocation(LocationDTO targetLocation) {
 		_targetLocation = targetLocation;
 	}
-
+	
 	public LocationDTO moveToTarget() {
 						
 		super.updateLocation(_targetLocation);
@@ -58,7 +58,7 @@ public class ComputerPlayer extends Player {
 			if (!seen) unseenCards.add(card);
 			seen = false;
 			
-			if (card.getName() == _currentLocation.getCurrentRoom()) {
+			if (card.getName().equals(_currentLocation.getCurrentRoom())) {
 				room = card;
 			}
 		}

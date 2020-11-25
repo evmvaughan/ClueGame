@@ -72,5 +72,14 @@ public class CardStorage implements ILocalStorage<Card> {
 	public void addCardCollection(ICardCollection collection) {
 		_cardCollections.add(collection);
 	}
+
+	public Card getOne(String name) {
+		
+		for (Card card : _cards) {
+			if (card.getName().equals(name)) return card;
+		}
+		
+		return null;
+	}
 	
 }

@@ -171,7 +171,7 @@ public abstract class Player implements IEntity {
 
 	public Suggestion makeSuggestion(Card weapon, Card person, Card room) throws PlayerSuggestionNotInRoomException {
 		
-		if (_currentLocation.getCurrentRoom() != room.getName()) throw new PlayerSuggestionNotInRoomException("Player not in suggested room!");
+		if (!_currentLocation.getCurrentRoom().equals(room.getName())) throw new PlayerSuggestionNotInRoomException("Player not in suggested room!");
 		
 		Suggestion suggestion = new Suggestion(weapon, person, room);
 		_recentSuggestion = suggestion;
@@ -185,9 +185,9 @@ public abstract class Player implements IEntity {
 		
 		ArrayList<Card> disprovals = new ArrayList<Card>();
 		
-		if (suggestion.getPersonCard().getName().equals(this._playerName)) {
-			moveToTarget(new LocationDTO(suggestion.getRoomCard().getName(), _currentLocation.getCurrentRow(), _currentLocation.getCurrentColumn()));
-		}
+//		if (suggestion.getPersonCard().getName().equals(this._playerName)) {
+//			moveToTarget(new LocationDTO(suggestion.getRoomCard().getName(), _currentLocation.getCurrentRow(), _currentLocation.getCurrentColumn()));
+//		}
 		
 		for (Card card : _hand.getCards()) {
 			

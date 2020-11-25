@@ -157,4 +157,11 @@ public class Movement {
 		return _playerMovementContexts;
 	}
 
+	public PlayerMovementContext getPlayersMovementContext(Player player) {
+		for (PlayerMovementContext context : _playerMovementContexts) {
+			if (context.getPlayer() == player) return context; 
+		}
+		return null;
+	}
+
 }
