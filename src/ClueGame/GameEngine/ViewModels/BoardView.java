@@ -20,6 +20,7 @@ import ClueGame.GameEngine.Movement.Movement;
 import ClueGame.GameEngine.Movement.PlayerMovementContext;
 import ClueGame.GameEngine.Panels.ClueGameUI;
 import ClueGame.GameEngine.Panels.GuessPanel;
+import ClueGame.Playables.Entities.Card.Collection.CollectionType;
 import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
@@ -70,7 +71,7 @@ public class BoardView extends JPanel {
 
 		mapBoardCellAndPlayerViews();
 		
-		_guessView = new GuessPanel();
+		_guessView = GuessPanel.getInstance();
 		
 	}
 
@@ -120,16 +121,6 @@ public class BoardView extends JPanel {
 		ClueGameUI.PlayerViews = _playerViews;
 		ClueGameUI.CellViews = _cellViews;
 
-	}
-
-	private void handleSuggestions() {
-		for (PlayerView player : _playerViews) {
-			if (player.isInRoom()) {
-				if (player.getPlayer() instanceof HumanPlayer && player.getPlayer().hasTurn()) {
-					_guessView.showGuess();
-				}
-			}
-		}
 	}
 
 	private void drawPlayers(Graphics g) {
@@ -215,17 +206,11 @@ public class BoardView extends JPanel {
 			playerView.updateLocation(context.getCell().getColumn(), context.getCell().getRow());
 
 		}
-		
-//		for (PlayerMovementContext movementContext : GameEngine.Movement.getPlayerMovementContexts()) {
-//			
-//			for (PlayerView playerView : _playerViews) {
-//				if (movementContext.getPlayer() == playerView.getPlayer())
-//					playerView.updateLocation(movementContext.getCell().getColumn(), movementContext.getCell().getRow());
-//				
-//			}
-//		}
 	}
 
+	////////////////////////////////
+	// Handle Mouse Click Actions //
+	////////////////////////////////
 	private class PanelListener implements MouseListener {
 
 		@Override
@@ -261,10 +246,23 @@ public class BoardView extends JPanel {
 					((HumanPlayer) currentPlayer).moveToTarget(
 							new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn()));
 					
-					if (targetCell.isRoomCenter()) _guessView.showGuess();
+					if (targetCell.isRoomCenter()) _guessView.showGuess(CollectionType.SUGGESTION);
 
+				} else if (clickedCellIsInSameRoomAsTarget(clickedCell) != null) {
+					
+					currentPlayer.setTurnLock(false);
+
+					BoardCell targetCell = clickedCellIsInSameRoomAsTarget(clickedCell).getCell();
+					Room targetRoom = BoardServiceCollection.RoomService.getRoomFromCell(targetCell);
+
+					((HumanPlayer) currentPlayer).moveToTarget(
+							new LocationDTO(targetRoom.getName(), targetCell.getRow(), targetCell.getColumn()));
+					
+					if (targetCell.isRoomCenter()) _guessView.showGuess(CollectionType.SUGGESTION);
+					
+					
 				} else if (clickedCell.getCell().getRoomId() == currentRoom.getSymbol() && currentCell.isRoomCenter()){ 
-					_guessView.showGuess();
+					_guessView.showGuess(CollectionType.SUGGESTION);
 
 				} else {
 				
@@ -279,6 +277,21 @@ public class BoardView extends JPanel {
 
 				ClueGameUI.getInstance().updateUIComponents();
 			}
+		}
+
+		private CellView clickedCellIsInSameRoomAsTarget(CellView clickedCell) {
+			
+			if (clickedCell.getCell().IsRoom()) {
+				
+				BoardCell clickedRoomCenterCell = BoardServiceCollection.RoomService.getRoomFromCell(clickedCell.getCell()).getCenterCell();
+				
+				for (CellView view : _cellViews) 
+					if (view.getCell().isEquivalentCell(clickedRoomCenterCell.getRow(), clickedRoomCenterCell.getColumn())) 
+						if (view.isTarget()) return view;
+				
+			}
+			
+			return null;
 		}
 
 		@Override

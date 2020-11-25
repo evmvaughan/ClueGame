@@ -10,6 +10,7 @@ import ClueGame.Playables.Services.PlayablesServiceCollection;
 import ClueGame.Playables.Services.PlayerService;
 import Exceptions.BadConfigFormatException;
 import ClueGame.GameEngine.Movement.*;
+import ClueGame.GameEngine.Panels.ClueGameUI;
 import SeedWork.ISingleton;
 
 public class GameEngine implements ISingleton<GameEngine>{
@@ -20,6 +21,8 @@ public class GameEngine implements ISingleton<GameEngine>{
 	
 	private PlayerService _playerService;
 	
+	private boolean _gameIsRunning;
+	
 	private GameEngine () {}
 	
 	public static GameEngine getInstance() {
@@ -27,6 +30,8 @@ public class GameEngine implements ISingleton<GameEngine>{
 	}
 	
 	public void initializeAll() {
+		
+		_gameIsRunning = true;
 		
 		BoardServiceCollection.initialize();
 		PlayablesServiceCollection.initialize();
@@ -69,5 +74,14 @@ public class GameEngine implements ISingleton<GameEngine>{
 		
 	}
 
-
+	public void endGame() {
+		
+		_gameIsRunning = false;
+		
+		ClueGameUI.getInstance().showGameIsFinishedDialog();
+	}
+	
+	public boolean gameIsRunning() {
+		return _gameIsRunning;
+	}
 }

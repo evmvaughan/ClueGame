@@ -18,6 +18,8 @@ import ClueGame.GameEngine.Commands.UserInteractionCommand;
 import ClueGame.GameEngine.Commands.UserInteractionCommandHandler;
 import ClueGame.GameEngine.ViewModels.CellView;
 import ClueGame.GameEngine.ViewModels.PlayerView;
+import Exceptions.GameIsNotRunningException;
+import Exceptions.NotPlayersTurnException;
 import Exceptions.PlayersTurnNotFinishedException;
 
 public class GameControl extends JPanel implements ActionListener {
@@ -104,6 +106,7 @@ public class GameControl extends JPanel implements ActionListener {
 		
 		JButton accusation = new JButton("Make Accusation");
 		panel.add(accusation);
+		accusation.addActionListener(this);
 		
 		JButton next = new JButton("NEXT!");
 		panel.add(next);
@@ -149,13 +152,13 @@ public class GameControl extends JPanel implements ActionListener {
 		
 		try {
 			_commandHandler.Handle(command);
-		} catch (PlayersTurnNotFinishedException e) {
+		} catch (PlayersTurnNotFinishedException | NotPlayersTurnException | GameIsNotRunningException e) {
 			
-    		String message = "Your turn is not finished!";
+			String message = e.getMessage();
     		
     		JOptionPane.showMessageDialog(ClueGameUI.getInstance(), message, "Clue Game Message", JOptionPane.INFORMATION_MESSAGE);
-    		
-		}
+   		
+		} 
 		
 		ClueGameUI.getInstance().updateUIComponents();
 	}

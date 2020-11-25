@@ -34,7 +34,6 @@ public class ClueGameUI extends JPanel {
 	
 	public static ArrayList<PlayerView> PlayerViews;
 	public static ArrayList<CellView> CellViews;
-	public static ArrayList<RoomLabel> RoomLabels;
 	
 	private BoardView _board;
 	private GameControl _gameControl;
@@ -61,16 +60,6 @@ public class ClueGameUI extends JPanel {
 		add(_board, BorderLayout.CENTER);
 		add(_gameControl, BorderLayout.SOUTH);
 		
-	}
-	
-	public void showSplashScreen(JFrame frame, Player player) {
-		
-		String message = "You are " + player.getName();
-		
-		message = message + "\nCan you find the solution \nbefore the Computer Players?";
-		
-		JOptionPane.showMessageDialog(frame, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-
 	}
 	
 	
@@ -110,7 +99,20 @@ public class ClueGameUI extends JPanel {
 		
 	}
 
-	public void addRoomLabel(RoomLabel label) {
-		RoomLabels.add(label);
+	
+	public void showSplashScreen(JFrame frame, Player player) {
+		
+		String message = "You are " + player.getName();
+		
+		message = message + "\nCan you find the solution \nbefore the Computer Players?";
+		
+		JOptionPane.showMessageDialog(frame, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+
+	}
+	
+	public void showGameIsFinishedDialog() {
+		String message = "Player: " + PlayablesServiceCollection.PlayerService.getCurrentPlayer().getName() + "lost the game!";
+				
+		JOptionPane.showMessageDialog(this, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -1,5 +1,6 @@
 package ClueGame.GameEngine.EventHandlers;
 
+import ClueGame.GameEngine.GameEngine;
 import ClueGame.Playables.Entities.Player.Guess.Accusation;
 import ClueGame.Playables.Services.Dealer;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
@@ -19,7 +20,9 @@ public class AccusationAssertedEventHandler<AccusationAssertedEvent> implements 
 		Accusation accusation = ((ClueGame.Playables.Events.AccusationAssertedEvent) event).getAccusation();
 		
 		if (_dealer.receivedValidAccusation(accusation)) {
-			// Players wins
+			System.out.println("Player wins!");
+		} else {
+			GameEngine.getInstance().endGame();
 		}
 	}
 }
