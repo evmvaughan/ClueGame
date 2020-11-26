@@ -19,10 +19,13 @@ public class AccusationAssertedEventHandler<AccusationAssertedEvent> implements 
 		
 		Accusation accusation = ((ClueGame.Playables.Events.AccusationAssertedEvent) event).getAccusation();
 		
+		boolean win = false;
+		
 		if (_dealer.receivedValidAccusation(accusation)) {
 			System.out.println("Player wins!");
-		} else {
-			GameEngine.getInstance().endGame();
+			win = true;
 		}
+		
+		GameEngine.getInstance().endGame(win);
 	}
 }

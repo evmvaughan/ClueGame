@@ -65,6 +65,10 @@ public class UserInteractionCommandHandler {
 		_playerService.initiateNextPlayerTurn();
 		
 		Player currentPlayer = _playerService.getCurrentPlayer();
+		
+		if (currentPlayer instanceof ComputerPlayer && ((ComputerPlayer)currentPlayer).hasAccusation()) {
+			((ComputerPlayer)currentPlayer).makeAccusation();
+		}
 				
 		currentPlayer.rollDice();
 		currentPlayer.selectTargetFromRoll();

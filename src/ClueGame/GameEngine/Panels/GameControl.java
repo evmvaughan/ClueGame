@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import ClueGame.GameEngine.Commands.UserInteractionCommand;
 import ClueGame.GameEngine.Commands.UserInteractionCommandHandler;
 import ClueGame.GameEngine.ViewModels.CellView;
 import ClueGame.GameEngine.ViewModels.PlayerView;
+import ClueGame.Playables.Entities.Card.Card;
 import Exceptions.GameIsNotRunningException;
 import Exceptions.NotPlayersTurnException;
 import Exceptions.PlayersTurnNotFinishedException;
@@ -48,8 +50,12 @@ public class GameControl extends JPanel implements ActionListener {
 		add(internalPanel);
 	}
 	
-	private void setGuessResult(String guessResult) {
-		_guessResult.setText(guessResult);
+	public void setGuessResult(String guessResult) {
+		if (guessResult != null) {
+			_guessResult.setText(guessResult);
+		} else {
+			_guessResult.setText("Suggestion was disproved!");
+		}
 	}
 	
 	public void setTurn(PlayerView playerView, Integer roll) {
@@ -58,8 +64,8 @@ public class GameControl extends JPanel implements ActionListener {
 		_roll.setText(roll.toString());
 	}
 	
-	private void setGuess(String guess) {
-		_guess.setText(guess);
+	public void setGuess(ArrayList<Card> cards) {
+		_guess.setText(cards.get(0).getName() + ", " + cards.get(1).getName() + ", " + cards.get(2).getName());
 	}
 	
 	private JPanel turnInformation() {

@@ -1,5 +1,9 @@
 package ClueGame.GameEngine.EventHandlers;
 
+import ClueGame.GameEngine.Panels.ClueGameUI;
+import ClueGame.Playables.Entities.Card.Card;
+import ClueGame.Playables.Entities.Player.ComputerPlayer;
+import ClueGame.Playables.Entities.Player.HumanPlayer;
 import ClueGame.Playables.Entities.Player.Player;
 import ClueGame.Playables.Entities.Player.Guess.Suggestion;
 import ClueGame.Playables.Services.Dealer;
@@ -24,7 +28,24 @@ public class SuggestionAssertedEventHandler<SuggestionAssertedEvent> implements 
 		
 		suggestedPlayer.moveToTarget(currentPlayer.getLocation());
 				
-		_dealer.distributeSuggestion(suggestion, currentPlayer);
+		Card disprovedCard = _dealer.distributeSuggestion(suggestion, currentPlayer);
+		
+		ClueGameUI.getInstance().updateGuess(suggestion);
+		
+		if (disprovedCard != null) {			
+			
+			if (currentPlayer instanceof HumanPlayer) {
+				currentPlayer.addSeenCard(disprovedCard);
+				ClueGameUI.getInstance().updateDisprovedCard(disprovedCard);
+				ClueGameUI.getInstance().updateSeenCards();
+			} else {
+				ClueGameUI.getInstance().updateDisprovedCard(null);
+			}
+		} else {
+			if (currentPlayer instanceof ComputerPlayer) {
+				((ComputerPlayer)currentPlayer).setSuggestionAsAccusation(suggestion);
+			}
+		}
 	}
 }
 

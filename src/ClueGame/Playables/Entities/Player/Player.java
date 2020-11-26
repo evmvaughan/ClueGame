@@ -212,4 +212,19 @@ public abstract class Player implements IEntity {
 	public Integer getRoll() {
 		return _roll;
 	}
+
+	public void addSeenCard(Card disprovedCard) {
+		
+		boolean isUnique = true;
+		
+		for (Card card : _seenCards) {
+			if (disprovedCard == card) {
+				isUnique = false;
+			}
+		}
+		
+		if (isUnique) {
+			_seenCards.add(disprovedCard);
+		}
+	}
 }

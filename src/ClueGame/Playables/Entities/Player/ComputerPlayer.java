@@ -14,6 +14,8 @@ import SeedWork.EventBus;
 public class ComputerPlayer extends Player {
 		
 	private LocationDTO _targetLocation;
+	
+	private Suggestion _suggestionToAccusation;
 
 	public ComputerPlayer(String playerName, String playerID) {
 		super(playerName, playerID);		
@@ -82,5 +84,17 @@ public class ComputerPlayer extends Player {
 			}
 		}
 		return unseenCardsOfType;
+	}
+
+	public void setSuggestionAsAccusation(Suggestion suggestion) {
+		_suggestionToAccusation = suggestion;
+	}
+	
+	public boolean hasAccusation() {
+		return _suggestionToAccusation != null;
+	}
+
+	public void makeAccusation() {
+		super.makeAccusation(_suggestionToAccusation.getWeaponCard(), _suggestionToAccusation.getPersonCard(), _suggestionToAccusation.getRoomCard());
 	}
 }

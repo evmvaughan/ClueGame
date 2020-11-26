@@ -152,6 +152,7 @@ public class GuessPanel extends JDialog implements ActionListener{
 			Card personCard = PlayablesServiceCollection.CardService.getCardByName(playerCombo.getSelectedItem().toString());
 						
 			try {
+				
 				player.makeSuggestion(weaponCard, personCard, roomCard);
 			} catch (PlayerSuggestionNotInRoomException e) {
 				System.out.println(e.getMessage());

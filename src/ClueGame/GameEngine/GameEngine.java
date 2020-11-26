@@ -74,11 +74,11 @@ public class GameEngine implements ISingleton<GameEngine>{
 		
 	}
 
-	public void endGame() {
+	public void endGame(boolean win) {
 		
 		_gameIsRunning = false;
 		
-		ClueGameUI.getInstance().showGameIsFinishedDialog();
+		ClueGameUI.getInstance().showGameIsFinishedDialog(win);
 	}
 	
 	public boolean gameIsRunning() {
