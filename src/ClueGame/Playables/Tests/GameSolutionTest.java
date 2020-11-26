@@ -30,6 +30,8 @@ public class GameSolutionTest {
 		GameEngine gameEngine = GameEngine.getInstance();
 		
 		gameEngine.initializeAll();
+		
+		gameEngine.setAsMock();
 	}
 	@Test
 	public void checkAccusation()

@@ -35,5 +35,7 @@ public class PlayerMovedToSelectedTargetEventHandler<PlayerMovedToSelectedTarget
 				}
 			}
 		}
+		
+		player.setTurn(false);
 	}
 }

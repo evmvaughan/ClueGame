@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import ClueGame.Board.Services.BoardServiceCollection;
 import ClueGame.Playables.Entities.Player.LocationDTO;
 import ClueGame.Playables.Entities.Player.Player;
+import ClueGame.Playables.Entities.Player.Guess.Accusation;
 import ClueGame.Playables.Services.PlayablesServiceCollection;
 import ClueGame.Playables.Services.PlayerService;
 import Exceptions.BadConfigFormatException;
@@ -22,6 +23,8 @@ public class GameEngine implements ISingleton<GameEngine>{
 	private PlayerService _playerService;
 	
 	private boolean _gameIsRunning;
+	
+	private boolean _isMock;
 	
 	private GameEngine () {}
 	
@@ -70,15 +73,16 @@ public class GameEngine implements ISingleton<GameEngine>{
 		gameEngine.initializeAll();
 	}
 
-	public void renderPlayerTargets(ArrayList<LocationDTO> targets) {
-		
+	public void setAsMock() {
+		_isMock = true;
 	}
 
-	public void endGame(boolean win) {
+	public void endGame(Accusation accusation, boolean win) {
 		
 		_gameIsRunning = false;
-		
-		ClueGameUI.getInstance().showGameIsFinishedDialog(win);
+		if (!_isMock) {
+			ClueGameUI.getInstance().showGameIsFinishedDialog(accusation, win);
+		}
 	}
 	
 	public boolean gameIsRunning() {

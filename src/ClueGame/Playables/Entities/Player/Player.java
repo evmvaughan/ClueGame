@@ -185,10 +185,6 @@ public abstract class Player implements IEntity {
 		
 		ArrayList<Card> disprovals = new ArrayList<Card>();
 		
-//		if (suggestion.getPersonCard().getName().equals(this._playerName)) {
-//			moveToTarget(new LocationDTO(suggestion.getRoomCard().getName(), _currentLocation.getCurrentRow(), _currentLocation.getCurrentColumn()));
-//		}
-		
 		for (Card card : _hand.getCards()) {
 			
 			for (Card suggestedCard : suggestion.getCards()) {

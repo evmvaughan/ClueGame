@@ -87,7 +87,7 @@ public class ClueGameUI extends JPanel {
 
 	}
 	
-	public void showGameIsFinishedDialog(boolean win) {
+	public void showGameIsFinishedDialog(Accusation accusation, boolean win) {
 		
 		String playerName = PlayablesServiceCollection.PlayerService.getCurrentPlayer().getName();
 		
@@ -98,17 +98,17 @@ public class ClueGameUI extends JPanel {
 		} else {
 			message = "Player: " + playerName + " lost the game!";
 		}
-				
+		
+		message += "\nThe accusation was: " + accusation.getPersonCard().getName() + ", " + 
+											  accusation.getRoomCard().getName() + ", " + 
+											  accusation.getWeaponCard().getName();
+		
 		JOptionPane.showMessageDialog(this, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public void updateDisprovedCard(Card disprovedCard) {
+	public void updateDisprovedCard(String prompt) {
 		
-		if (disprovedCard != null) {
-			_gameControl.setGuessResult(disprovedCard.getName());
-		} else {
-			_gameControl.setGuessResult(null);
-		}
+		_gameControl.setGuessResult(prompt);
 
 	}
 
@@ -133,7 +133,7 @@ public class ClueGameUI extends JPanel {
 
 		JFrame frame = new JFrame("Clue Game"); 
 		frame.setContentPane(panel); 
-		frame.setSize(FrameWidth, FrameHeight); 
+		frame.setSize(FrameWidth, FrameHeight);  
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		frame.setVisible(true); 
 		

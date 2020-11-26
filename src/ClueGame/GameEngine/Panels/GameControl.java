@@ -50,12 +50,10 @@ public class GameControl extends JPanel implements ActionListener {
 		add(internalPanel);
 	}
 	
-	public void setGuessResult(String guessResult) {
-		if (guessResult != null) {
-			_guessResult.setText(guessResult);
-		} else {
-			_guessResult.setText("Suggestion was disproved!");
-		}
+	public void setGuessResult(String prompt) {
+		
+		_guessResult.setText(prompt);
+		
 	}
 	
 	public void setTurn(PlayerView playerView, Integer roll) {

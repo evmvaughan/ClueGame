@@ -48,7 +48,7 @@ public class UserInteractionCommandHandler {
 
 	private void handleAccusatonCommand() throws NotPlayersTurnException {
 		
-		if (_playerService.getCurrentPlayer().hasTurn()) {
+		if (_playerService.getHumanPlayer().hasTurn()) {
 			GuessPanel.getInstance().showGuess(CollectionType.ACCUSATION);
 
 		} else {

@@ -30,22 +30,33 @@ public class SuggestionAssertedEventHandler<SuggestionAssertedEvent> implements 
 				
 		Card disprovedCard = _dealer.distributeSuggestion(suggestion, currentPlayer);
 		
-		ClueGameUI.getInstance().updateGuess(suggestion);
-		
-		if (disprovedCard != null) {			
+		try {
+			ClueGameUI.getInstance().updateGuess(suggestion);
 			
-			if (currentPlayer instanceof HumanPlayer) {
-				currentPlayer.addSeenCard(disprovedCard);
-				ClueGameUI.getInstance().updateDisprovedCard(disprovedCard);
-				ClueGameUI.getInstance().updateSeenCards();
+			if (disprovedCard != null) {			
+				
+				if (currentPlayer instanceof HumanPlayer) {
+					currentPlayer.addSeenCard(disprovedCard);
+					ClueGameUI.getInstance().updateDisprovedCard(disprovedCard.getName());
+					ClueGameUI.getInstance().updateSeenCards();
+				} else {
+					ClueGameUI.getInstance().updateDisprovedCard("Suggestion Disproved!");
+				}
 			} else {
-				ClueGameUI.getInstance().updateDisprovedCard(null);
+				
+				ClueGameUI.getInstance().updateDisprovedCard("No new clue!");
+				
+				if (currentPlayer instanceof ComputerPlayer) {
+					((ComputerPlayer)currentPlayer).setSuggestionAsAccusation(suggestion);
+				}
 			}
-		} else {
-			if (currentPlayer instanceof ComputerPlayer) {
-				((ComputerPlayer)currentPlayer).setSuggestionAsAccusation(suggestion);
-			}
+		} catch(Exception e) {
 		}
+		
+
+		
+		currentPlayer.setTurn(false);
+
 	}
 }
 

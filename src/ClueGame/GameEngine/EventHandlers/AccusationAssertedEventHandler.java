@@ -26,6 +26,6 @@ public class AccusationAssertedEventHandler<AccusationAssertedEvent> implements 
 			win = true;
 		}
 		
-		GameEngine.getInstance().endGame(win);
+		GameEngine.getInstance().endGame(accusation, win);
 	}
 }
